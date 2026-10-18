@@ -2,12 +2,13 @@
 
 import { motion, type Variants } from "motion/react";
 import { ButtonLink } from "@/components/button-link";
-import { Falcon } from "@/components/falcon";
+import { Falcon } from "@/components/brand-marks";
 import { gutter } from "@/components/layout";
 import { HeroHeadline } from "./hero-headline";
 import { HeroMedia } from "./hero-media";
 import { EASE_BRAND, EXIT_S, TEXT_ENTER_DELAY_S } from "./hero-motion";
-import type { Slide, TextSegment } from "./slides";
+import type { TextSegment } from "@/lib/text";
+import type { Slide } from "./slides";
 
 type HeroSlideProps = {
   slide: Slide;

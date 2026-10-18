@@ -2,7 +2,6 @@ import { preload } from "react-dom";
 import { HeroCarousel } from "@/components/hero/hero-carousel";
 import { resolveSlideMedia } from "@/components/hero/resolve-slide-media";
 import { slides } from "@/components/hero/slides";
-import { SiteHeader } from "@/components/site-header";
 
 /** Preload the first slide poster (the LCP image) for the matching viewport. */
 function preloadFirstPoster(desktop: string | null, mobile: string | null) {
@@ -20,11 +19,8 @@ export default function Home() {
   preloadFirstPoster(desktop.poster, mobile.poster);
 
   return (
-    <>
-      <SiteHeader />
-      <main>
-        <HeroCarousel slides={heroSlides} />
-      </main>
-    </>
+    <main>
+      <HeroCarousel slides={heroSlides} />
+    </main>
   );
 }

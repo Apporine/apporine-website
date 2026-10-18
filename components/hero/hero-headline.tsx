@@ -3,7 +3,7 @@
 import { motion, type Variants } from "motion/react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { EASE_BRAND, EXIT_S, TEXT_ENTER_DELAY_S } from "./hero-motion";
-import type { TextSegment } from "./slides";
+import type { TextSegment } from "@/lib/text";
 
 type HeroHeadlineProps = {
   as: "h1" | "h2";

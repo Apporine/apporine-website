@@ -7,12 +7,12 @@ A full screen hero carousel with 3 slides. Each slide = background video + text 
 | Property | Desktop (1024px and up) | Tablet (768 to 1023px) | Mobile (under 768px) |
 | --- | --- | --- | --- |
 | Hero height | 100svh, minimum 720px | 100svh, minimum 680px | 100svh, minimum 640px |
-| Side margin (hero, navigation bar and hero controls) | no max width container; `padding-inline: clamp(24px, 8vw, 160px)` (about 154px at 1920px, 115px at 1440px) | same | 20px |
+| Side margin (hero text and hero controls; the navigation Falcon aligns to it) | no max width container; `padding-inline: clamp(24px, 8vw, 160px)` (about 154px at 1920px, 115px at 1440px) | same | 24px |
 | Text widths | headline max `min(880px, 60vw)`; subheadline max 640px; paragraph max 34rem (about 65 characters) | same | 100% |
 | Text block vertical position | vertically centred, shifted up by 4vh, below the nav (padding top 120px) | same | anchored to the bottom, padding bottom 120px (space for controls) |
 | Text alignment | left | left | left |
 
-The navigation bar (logo, links, buttons), the hero text and the hero controls use exactly the same side margin, so the logo, eyebrow, headline, paragraph, buttons and the “01 / 03” counter share one left edge. At this headline width the slide 1 headline breaks into 3 lines on desktop and tablet. (Note: `min(920px, 60vw)` was the requested value, but at 1440px and wider 920px fits “BUILDING WHAT TOMORROW’S” on one line and the headline drops to 2 lines; 880px keeps it at 3.)
+The hero text and the hero controls use exactly the same side margin, and the navigation capsule is placed so its Falcon lands on it, so the Falcon, eyebrow, headline, paragraph, buttons and the “01 / 03” counter share one left edge. At this headline width the slide 1 headline breaks into 3 lines on desktop and tablet. (Note: `min(920px, 60vw)` was the requested value, but at 1440px and wider 920px fits “BUILDING WHAT TOMORROW’S” on one line and the headline drops to 2 lines; 880px keeps it at 3.)
 
 ## 3. Background video layer (per slide)
 - `<video>` with `muted`, `playsInline`, `preload="metadata"`, `poster` set, no controls, `object-fit: cover`, `object-position: right center` on desktop, `center center` on mobile.
@@ -35,7 +35,7 @@ The navigation bar (logo, links, buttons), the hero text and the hero controls u
 | Element | Font | Size | Weight and settings | Line height | Letter spacing | Colour | Margin below |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Eyebrow | IBM Plex Mono | 12px | 500, uppercase | 1.3 | 0.18em | `--plum-300` | 28px |
-| Eyebrow Falcon | Falcon PNG (`public/brand/falcon*.png`, from assets/brand/falcon/) | 22px wide x 10px high, 10px gap before text | logo colours as supplied | | | | |
+| Eyebrow Falcon | Falcon PNG (`public/brand/falcon-clean*.png`, from assets/brand/falcon/) | 22px wide x 10px high, 10px gap before text | logo colours as supplied | | | | |
 | Headline | Bricolage Grotesque | clamp(44px, 7vw, 100px) | 800, `font-variation-settings: "wdth" 75, "opsz" 96`, uppercase, max width `min(880px, 60vw)` from 768px | 0.9 | -0.015em | `--plum-50` | 28px |
 | Headline accent word | Instrument Serif Italic | 1.05em of headline | 400, lowercase (text-transform none) | inherit | 0 | `--citrine` | |
 | Subheadline (slide 3 only) | Instrument Sans | clamp(20px, 2vw, 28px) | 500, max width 640px, soft text shadow | 1.3 | -0.005em | `--plum-50`, accent word “tomorrow.” in Instrument Serif Italic, `--citrine` | 20px |
@@ -72,24 +72,13 @@ Headline semantics: slide 1 headline is the page `<h1>`. Slides 2 and 3 use `<h2
 - Keyboard: Left and Right arrow keys change slides when the hero has focus. Swipe left and right on touch devices.
 
 ## 7. Controls (bottom of hero)
-- Position: bottom 40px (desktop), 24px (mobile), using the same side margin as the hero text and navigation bar (section 2).
+- Position: bottom 40px (desktop), 24px (mobile), using the same side margin as the hero text (section 2).
 - Left group: slide counter “01 / 03” in IBM Plex Mono 12px, `--plum-300`, then three progress bars, each 48px wide, 2px high, gap 8px, background rgba(251,249,252,0.2); the active bar fills with `--citrine` from 0 to 100% over 8 seconds; completed bars stay full until the cycle restarts.
 - Clicking a bar jumps to that slide.
 - Right group: Pause/Play button (44 x 44px circle, 1px border `--plum-600`, icon `--plum-50`), then Previous and Next buttons (same style). Accessible names: “Pause slideshow”, “Play slideshow”, “Previous slide”, “Next slide”.
 
-## 8. Navigation bar (over the hero)
-- Height 72px, fixed over the hero, transparent background, same side margin as the hero (section 2).
-- Left: the Falcon logo alone, no text. Height 30px on desktop, 26px on mobile, width automatic (about 2.28 to 1). next/image with the 1x, 2x and 3x exports in `public/brand/`, preloaded.
-- Hover reveal: on hover or keyboard focus of the logo link, the word “APPORINE” slides out 12px to the right of the Falcon (Instrument Sans 600, 15px, letter spacing 0.24em, `--plum-50`). The word container goes from max-width 0 and opacity 0 to max-width 180px and opacity 1 over 450ms, `--ease-brand`; the word itself moves in from 8px to the left. At the same time the Falcon brightens: `filter: brightness(1.12) drop-shadow(0 0 10px rgba(245,230,99,0.35))`, 300ms. On mouse leave or blur everything reverses over 300ms.
-- The word is absolutely positioned beside the Falcon, so it never pushes the links or buttons. Between 1024px and 1319px the inline links leave no room for it, so there only the Falcon glow shows.
-- Touch devices (no hover): the Falcon only; tapping goes to the homepage.
-- Accessibility: the link has `aria-label="Apporine, home"`; the Falcon image has empty alt and the word is `aria-hidden`.
-- Reduced motion: no slide, the word just fades in and out over 200ms.
-- Favicon, Apple touch icon and web manifest icons come from assets/brand/falcon/ (`app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`, `app/manifest.ts` with `public/brand/icon-192.png` and `icon-512.png`).
-- Centre (desktop only): links Products, Industries, Build with us, Insights, Company, Instrument Sans 500, 15px, `--plum-50` at 80% opacity, hover 100% with a 1px citrine underline growing from the centre.
-- Right: “Talk to us” text link, and a small primary button “Book a walkthrough” (height 40px, padding 0 20px, 14px).
-- Mobile: logo + a 44px menu button (“Menu”); the menu itself is phase 2, the button can open a simple full screen plum panel listing the same links.
-- On scroll past 80px: background becomes rgba(18,4,26,0.85) with backdrop blur 16px (prepare for future sections).
+## 8. Navigation (over the hero)
+The navigation is specified in `05-navigation-spec.md` (Imperial Plum glass capsule, Falcon logo with the wordmark reveal, mega panels, full screen menu under 1280px). The capsule is placed so the Falcon sits exactly on the hero side margin (section 2) at every width.
 
 ## 9. Accessibility
 - Region: `<section aria-roledescription="carousel" aria-label="Apporine highlights">`. Each slide `role="group" aria-roledescription="slide" aria-label="1 of 3"`.

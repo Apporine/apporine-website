@@ -5,6 +5,7 @@ import {
   Instrument_Sans,
   Instrument_Serif,
 } from "next/font/google";
+import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -59,7 +60,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${instrumentSans.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable}`}
       style={{ "--font-bricolage": bricolageFace } as React.CSSProperties}
     >
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }
