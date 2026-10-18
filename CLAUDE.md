@@ -11,7 +11,8 @@ The official website of Apporine, an enterprise product company. Phase 1 is the 
 
 ## Assets
 - Videos and posters: `_brief/assets/videos/` (copy into `public/videos/`)
-- Gate mark logo: `_brief/assets/brand/gate-mark.svg`
+- Logo, the Falcon: `_brief/assets/brand/falcon/` (falcon.png, @2x, @3x and the favicon / app icons; `apporine-logo-full-reference.png` is reference only, never used on the site). Copies live in `public/brand/` and `app/`.
+- Navigation shows the Falcon alone; on hover or keyboard focus the word “APPORINE” slides out to its right without moving anything else (see `02-hero-spec.md`, Navigation). The Falcon also marks each hero eyebrow.
 
 ## Non negotiable rules
 - Use only the colours in the design tokens. No blue, no orange, no gradients except the readability scrim defined in the spec.
@@ -39,6 +40,6 @@ components/
   hero/hero-slide.tsx
   hero/hero-controls.tsx
   hero/slides.ts    slide data from 03-content.md
-  icons/gate-mark.tsx
+  falcon.tsx        the Falcon logo (next/image)
 public/videos/      hero videos and posters
 ```

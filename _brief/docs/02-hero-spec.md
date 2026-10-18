@@ -35,7 +35,7 @@ The navigation bar (logo, links, buttons), the hero text and the hero controls u
 | Element | Font | Size | Weight and settings | Line height | Letter spacing | Colour | Margin below |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Eyebrow | IBM Plex Mono | 12px | 500, uppercase | 1.3 | 0.18em | `--plum-300` | 28px |
-| Eyebrow gate mark | inline SVG (assets/brand/gate-mark.svg) | 14 x 14px, 12px gap before text | stroke `--citrine` | | | | |
+| Eyebrow Falcon | Falcon PNG (`public/brand/falcon*.png`, from assets/brand/falcon/) | 22px wide x 10px high, 10px gap before text | logo colours as supplied | | | | |
 | Headline | Bricolage Grotesque | clamp(44px, 7vw, 100px) | 800, `font-variation-settings: "wdth" 75, "opsz" 96`, uppercase, max width `min(880px, 60vw)` from 768px | 0.9 | -0.015em | `--plum-50` | 28px |
 | Headline accent word | Instrument Serif Italic | 1.05em of headline | 400, lowercase (text-transform none) | inherit | 0 | `--citrine` | |
 | Subheadline (slide 3 only) | Instrument Sans | clamp(20px, 2vw, 28px) | 500, max width 640px, soft text shadow | 1.3 | -0.005em | `--plum-50`, accent word “tomorrow.” in Instrument Serif Italic, `--citrine` | 20px |
@@ -79,7 +79,13 @@ Headline semantics: slide 1 headline is the page `<h1>`. Slides 2 and 3 use `<h2
 
 ## 8. Navigation bar (over the hero)
 - Height 72px, fixed over the hero, transparent background, same side margin as the hero (section 2).
-- Left: gate mark (20px, `--citrine`) + wordmark “APPORINE” in Instrument Sans 600, 15px, letter spacing 0.24em, `--plum-50`.
+- Left: the Falcon logo alone, no text. Height 30px on desktop, 26px on mobile, width automatic (about 2.28 to 1). next/image with the 1x, 2x and 3x exports in `public/brand/`, preloaded.
+- Hover reveal: on hover or keyboard focus of the logo link, the word “APPORINE” slides out 12px to the right of the Falcon (Instrument Sans 600, 15px, letter spacing 0.24em, `--plum-50`). The word container goes from max-width 0 and opacity 0 to max-width 180px and opacity 1 over 450ms, `--ease-brand`; the word itself moves in from 8px to the left. At the same time the Falcon brightens: `filter: brightness(1.12) drop-shadow(0 0 10px rgba(245,230,99,0.35))`, 300ms. On mouse leave or blur everything reverses over 300ms.
+- The word is absolutely positioned beside the Falcon, so it never pushes the links or buttons. Between 1024px and 1319px the inline links leave no room for it, so there only the Falcon glow shows.
+- Touch devices (no hover): the Falcon only; tapping goes to the homepage.
+- Accessibility: the link has `aria-label="Apporine, home"`; the Falcon image has empty alt and the word is `aria-hidden`.
+- Reduced motion: no slide, the word just fades in and out over 200ms.
+- Favicon, Apple touch icon and web manifest icons come from assets/brand/falcon/ (`app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`, `app/manifest.ts` with `public/brand/icon-192.png` and `icon-512.png`).
 - Centre (desktop only): links Products, Industries, Build with us, Insights, Company, Instrument Sans 500, 15px, `--plum-50` at 80% opacity, hover 100% with a 1px citrine underline growing from the centre.
 - Right: “Talk to us” text link, and a small primary button “Book a walkthrough” (height 40px, padding 0 20px, 14px).
 - Mobile: logo + a 44px menu button (“Menu”); the menu itself is phase 2, the button can open a simple full screen plum panel listing the same links.

@@ -2,7 +2,7 @@
 
 import { motion, type Variants } from "motion/react";
 import { ButtonLink } from "@/components/button-link";
-import { GateMark } from "@/components/icons/gate-mark";
+import { Falcon } from "@/components/falcon";
 import { gutter } from "@/components/layout";
 import { HeroHeadline } from "./hero-headline";
 import { HeroMedia } from "./hero-media";
@@ -124,9 +124,9 @@ export function HeroSlide({
           >
             <motion.p
               variants={variant(EYEBROW)}
-              className="mb-7 flex items-center gap-3 font-mono text-xs leading-[1.3] font-medium tracking-[0.18em] text-plum-300 uppercase"
+              className="mb-7 flex items-center gap-2.5 font-mono text-xs leading-[1.3] font-medium tracking-[0.18em] text-plum-300 uppercase"
             >
-              <GateMark size={14} className="shrink-0 text-citrine" />
+              <Falcon width={22} height={10} className="h-[10px] w-[22px] shrink-0 object-contain" />
               {slide.eyebrow}
             </motion.p>
 

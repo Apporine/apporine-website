@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ButtonLink } from "@/components/button-link";
-import { GateMark } from "@/components/icons/gate-mark";
+import { Falcon } from "@/components/falcon";
 import { gutter } from "@/components/layout";
 import { useScrolledPast } from "@/lib/use-browser-state";
 
@@ -21,6 +21,20 @@ const bookWalkthrough = { label: "Book a walkthrough", href: "/contact?route=wal
 const outline =
   "focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-citrine";
 const focusRing = `rounded-sm ${outline}`;
+
+/*
+ * Logo: the Falcon alone; on hover or keyboard focus the word slides out to
+ * its right (450ms in, 300ms out; a 200ms fade with reduced motion).
+ * Tailwind only applies hover where the device can hover, so touch shows the
+ * Falcon alone. Between 1024px and 1320px the inline navigation leaves no
+ * room beside the Falcon, so only the glow shows there.
+ */
+const logoFalcon =
+  "h-[26px] w-[60px] object-contain transition-[filter] duration-300 ease-brand group-hover:[filter:brightness(1.12)_drop-shadow(0_0_10px_rgba(245,230,99,0.35))] group-focus-visible:[filter:brightness(1.12)_drop-shadow(0_0_10px_rgba(245,230,99,0.35))] motion-reduce:duration-200 md:h-[30px] md:w-[69px]";
+const logoWordClip =
+  "absolute start-full top-1/2 ms-3 max-w-0 lg:max-[1319px]:hidden -translate-y-1/2 overflow-hidden opacity-0 transition-[max-width,opacity] duration-300 ease-brand group-hover:max-w-[180px] group-hover:opacity-100 group-hover:duration-450 group-focus-visible:max-w-[180px] group-focus-visible:opacity-100 group-focus-visible:duration-450 motion-reduce:max-w-[180px] motion-reduce:transition-opacity motion-reduce:duration-200 motion-reduce:group-hover:duration-200 motion-reduce:group-focus-visible:duration-200";
+const logoWord =
+  "block -translate-x-2 font-sans text-[15px] font-semibold tracking-[0.24em] whitespace-nowrap text-plum-50 transition-transform duration-300 ease-brand group-hover:translate-x-0 group-hover:duration-450 group-focus-visible:translate-x-0 group-focus-visible:duration-450 motion-reduce:translate-x-0";
 
 export function SiteHeader() {
   const scrolled = useScrolledPast(80);
@@ -62,10 +76,14 @@ export function SiteHeader() {
         <Link
           href="/"
           prefetch={false}
-          className={`flex items-center gap-2.5 text-plum-50 ${focusRing}`}
+          aria-label="Apporine, home"
+          className={`group relative flex shrink-0 items-center ${focusRing}`}
         >
-          <GateMark size={20} className="text-citrine" />
-          <span className="font-sans text-[15px] font-semibold tracking-[0.24em]">APPORINE</span>
+          <Falcon width={69} height={30} preload className={logoFalcon} />
+          {/* Absolutely placed so the reveal never pushes the navigation. */}
+          <span aria-hidden="true" className={logoWordClip}>
+            <span className={logoWord}>APPORINE</span>
+          </span>
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
