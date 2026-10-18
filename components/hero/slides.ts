@@ -1,10 +1,8 @@
 /** Hero slide content. Copy is locked: see _brief/docs/03-content.md. */
 
-/** A run of text; `accent` runs render in Instrument Serif Italic, citrine. */
-export type TextSegment = {
-  text: string;
-  accent?: boolean;
-};
+import { anchors, routes } from "@/lib/routes";
+import type { TextSegment } from "@/lib/text";
+
 
 export type SlideLink = {
   label: string;
@@ -62,8 +60,8 @@ export const slides: SlideContent[] = [
     ],
     paragraph:
       "We help enterprises move from software they manage to intelligence they can rely on. Apporine builds the products that turn noise into decisions, risk into resilience and ambition into advantage, in every industry we serve.",
-    primary: { label: "Discover Apporine", href: "/company" },
-    secondary: { label: "The pristine standard", href: "/company#pristine" },
+    primary: { label: "Discover Apporine", href: routes.company },
+    secondary: { label: "The pristine standard", href: anchors.pristine },
     video: "hero-01-monolith",
     scrim: { desktop: SOFT_SCRIM, mobileOverlay: "rgba(18,4,26,0.45)" },
   },
@@ -76,8 +74,8 @@ export const slides: SlideContent[] = [
     ],
     paragraph:
       "We don’t ship features. We ship standards. Every Apporine product is pristine: clear in design, correct under pressure and built for the long run. Relyxus, our first, turns alerts into answers and downtime into recovery.",
-    primary: { label: "Meet Relyxus", href: "/products/relyxus" },
-    secondary: { label: "Explore our products", href: "/products" },
+    primary: { label: "Meet Relyxus", href: routes.relyxus },
+    secondary: { label: "Explore our products", href: routes.products },
     video: "hero-02-armillary",
     scrim: { desktop: STRONG_SCRIM, mobileOverlay: "rgba(18,4,26,0.45)" },
   },
@@ -94,14 +92,10 @@ export const slides: SlideContent[] = [
     ],
     paragraph:
       "The leaders of the next decade won’t buy their advantage. They’ll build it. Apporine partners with ambitious enterprises to imagine, engineer and scale the products that will define their markets.",
-    primary: { label: "Start building", href: "/build" },
-    secondary: { label: "How we partner", href: "/build#how-we-partner" },
+    primary: { label: "Start building", href: routes.build },
+    secondary: { label: "How we partner", href: anchors.howWePartner },
     video: "hero-03-bridge",
     // The wireframe bridge is very bright on mobile: stronger even overlay.
     scrim: { desktop: STRONG_SCRIM, mobileOverlay: "rgba(18,4,26,0.6)" },
   },
 ];
-
-export function plainText(segments: TextSegment[]): string {
-  return segments.map((segment) => segment.text).join("");
-}

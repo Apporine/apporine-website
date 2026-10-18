@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 /*
  * Small hooks over browser state, built on useSyncExternalStore so they are
@@ -43,4 +43,27 @@ export function useScrolledPast(offset: number): boolean {
     () => window.scrollY > offset,
     () => false,
   );
+}
+
+/**
+ * True while the page is scrolled past `offset` and the last scroll went
+ * down; scrolling up clears it. Ignored (false) when `enabled` is false.
+ */
+export function useHiddenOnScrollDown(offset: number, enabled: boolean): boolean {
+  const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    if (!enabled) return;
+    let lastY = window.scrollY;
+    function onScroll() {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 4) return;
+      setHidden(y > offset && y > lastY);
+      lastY = y;
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [offset, enabled]);
+
+  return enabled && hidden;
 }

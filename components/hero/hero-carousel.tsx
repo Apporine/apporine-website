@@ -4,7 +4,8 @@ import { useRef, useState } from "react";
 import { useDocumentHidden, useMediaQuery } from "@/lib/use-browser-state";
 import { HeroControls } from "./hero-controls";
 import { HeroSlide } from "./hero-slide";
-import { plainText, type Slide } from "./slides";
+import { plainText } from "@/lib/text";
+import type { Slide } from "./slides";
 
 const SWIPE_THRESHOLD_PX = 50;
 

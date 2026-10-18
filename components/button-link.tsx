@@ -4,7 +4,7 @@ type ButtonLinkProps = {
   href: string;
   children: string;
   variant: "primary" | "secondary";
-  size?: "default" | "small";
+  size?: "default" | "nav" | "card";
   className?: string;
   onClick?: () => void;
 };
@@ -21,7 +21,9 @@ const variants = {
 
 const sizes = {
   default: "h-[52px] px-7 text-[15px]",
-  small: "h-10 px-5 text-sm",
+  // Navigation capsule (05-navigation-spec.md section 2) and panel feature card (section 5).
+  nav: "h-12 px-[22px] text-sm",
+  card: "h-10 px-[18px] text-sm",
 };
 
 /**
@@ -39,7 +41,7 @@ export function ButtonLink({
   return (
     <Link
       href={href}
-      // Target pages arrive in later phases; avoid prefetching routes that 404.
+      // Destinations are mostly placeholders for now: no prefetch on load.
       prefetch={false}
       onClick={onClick}
       className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
