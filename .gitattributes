@@ -1,0 +1,8 @@
+# Normalise line endings to LF in the repository
+* text=auto eol=lf
+
+# Media
+*.mp4 binary
+*.webm binary
+*.webp binary
+*.ico binary
