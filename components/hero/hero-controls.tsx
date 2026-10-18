@@ -1,5 +1,6 @@
 "use client";
 
+import { gutter } from "@/components/layout";
 import { SLIDE_DURATION_MS } from "./hero-motion";
 
 type HeroControlsProps = {
@@ -68,7 +69,7 @@ export function HeroControls({
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-6 z-20 md:bottom-10">
-      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-5 md:px-8 lg:px-16">
+      <div className={`${gutter} flex items-center justify-between gap-4`}>
         <div className="pointer-events-auto flex min-w-0 flex-1 items-center gap-4">
           <p className="shrink-0 font-mono text-xs font-medium text-plum-300">
             {twoDigits(active + 1)} / {twoDigits(total)}

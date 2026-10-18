@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { CROSSFADE_MS } from "./hero-motion";
-import type { SlideMedia } from "./slides";
+import type { SlideMedia, SlideScrim } from "./slides";
 
 type HeroMediaProps = {
   media: SlideMedia;
+  scrim: SlideScrim;
   isActive: boolean;
   /** Active or next slide: allowed to request video. */
   isLoadTarget: boolean;
@@ -16,6 +17,16 @@ type HeroMediaProps = {
   /** First slide: its poster is the LCP image. */
   priority: boolean;
 };
+
+// Mobile fades: top for the navigation, bottom for the text block.
+const MOBILE_TOP_FADE = "linear-gradient(180deg, rgba(18,4,26,0.6) 0%, rgba(18,4,26,0) 20%)";
+const MOBILE_BOTTOM_FADE =
+  "linear-gradient(0deg, rgba(18,4,26,0.92) 0%, rgba(18,4,26,0.55) 50%, rgba(18,4,26,0) 80%)";
+
+/** Under 768px: top fade, bottom fade, then the even overlay underneath. */
+function mobileScrim(overlay: string): string {
+  return `${MOBILE_TOP_FADE}, ${MOBILE_BOTTOM_FADE}, linear-gradient(${overlay}, ${overlay})`;
+}
 
 const noopSubscribe = () => () => {};
 
@@ -34,6 +45,7 @@ function useHydrated(): boolean {
  */
 export function HeroMedia({
   media,
+  scrim,
   isActive,
   isLoadTarget,
   playing,
@@ -138,8 +150,16 @@ export function HeroMedia({
         </video>
       )}
 
-      {/* Readability scrim: bottom to top on mobile, start to end from 768px. */}
-      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(18,4,26,0.85)_0%,rgba(18,4,26,0.4)_45%,rgba(18,4,26,0)_70%)] md:bg-[linear-gradient(90deg,rgba(18,4,26,0.70)_0%,rgba(18,4,26,0.35)_40%,rgba(18,4,26,0)_65%)] md:rtl:bg-[linear-gradient(270deg,rgba(18,4,26,0.70)_0%,rgba(18,4,26,0.35)_40%,rgba(18,4,26,0)_65%)]" />
+      {/* Readability scrim, per slide (spec section 3). */}
+      <div
+        className="absolute inset-0 bg-(image:--scrim-mobile) md:bg-(image:--scrim-desktop) md:rtl:-scale-x-100"
+        style={
+          {
+            "--scrim-mobile": mobileScrim(scrim.mobileOverlay),
+            "--scrim-desktop": scrim.desktop,
+          } as React.CSSProperties
+        }
+      />
     </div>
   );
 }
