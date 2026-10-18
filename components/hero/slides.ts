@@ -11,6 +11,19 @@ export type SlideLink = {
   href: string;
 };
 
+/** Readability scrim over the video (spec section 3). */
+export type SlideScrim = {
+  /** 768px and up: start to end gradient behind the text. */
+  desktop: string;
+  /** Under 768px: even overlay colour, layered under the top and bottom fades. */
+  mobileOverlay: string;
+};
+
+const SOFT_SCRIM =
+  "linear-gradient(90deg, rgba(18,4,26,0.80) 0%, rgba(18,4,26,0.65) 45%, rgba(18,4,26,0.30) 60%, rgba(18,4,26,0) 72%)";
+const STRONG_SCRIM =
+  "linear-gradient(90deg, rgba(18,4,26,0.88) 0%, rgba(18,4,26,0.74) 45%, rgba(18,4,26,0.42) 60%, rgba(18,4,26,0) 78%)";
+
 export type SlideContent = {
   id: string;
   eyebrow: string;
@@ -21,6 +34,7 @@ export type SlideContent = {
   secondary: SlideLink;
   /** Base file name in /public/videos, e.g. "hero-01-monolith". */
   video: string;
+  scrim: SlideScrim;
 };
 
 /** Media files for one viewport class. `null` means the file is not present. */
@@ -51,6 +65,7 @@ export const slides: SlideContent[] = [
     primary: { label: "Discover Apporine", href: "/company" },
     secondary: { label: "The pristine standard", href: "/company#pristine" },
     video: "hero-01-monolith",
+    scrim: { desktop: SOFT_SCRIM, mobileOverlay: "rgba(18,4,26,0.45)" },
   },
   {
     id: "products",
@@ -64,6 +79,7 @@ export const slides: SlideContent[] = [
     primary: { label: "Meet Relyxus", href: "/products/relyxus" },
     secondary: { label: "Explore our products", href: "/products" },
     video: "hero-02-armillary",
+    scrim: { desktop: STRONG_SCRIM, mobileOverlay: "rgba(18,4,26,0.45)" },
   },
   {
     id: "partnership",
@@ -81,6 +97,8 @@ export const slides: SlideContent[] = [
     primary: { label: "Start building", href: "/build" },
     secondary: { label: "How we partner", href: "/build#how-we-partner" },
     video: "hero-03-bridge",
+    // The wireframe bridge is very bright on mobile: stronger even overlay.
+    scrim: { desktop: STRONG_SCRIM, mobileOverlay: "rgba(18,4,26,0.6)" },
   },
 ];
 

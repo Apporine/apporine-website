@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ButtonLink } from "@/components/button-link";
 import { GateMark } from "@/components/icons/gate-mark";
+import { gutter } from "@/components/layout";
 import { useScrolledPast } from "@/lib/use-browser-state";
 
 const navLinks = [
@@ -17,7 +18,6 @@ const navLinks = [
 const talkToUs = { label: "Talk to us", href: "/contact" };
 const bookWalkthrough = { label: "Book a walkthrough", href: "/contact?route=walkthrough" };
 
-const container = "mx-auto w-full max-w-[1440px] px-5 md:px-8 lg:px-16";
 const outline =
   "focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-citrine";
 const focusRing = `rounded-sm ${outline}`;
@@ -58,7 +58,7 @@ export function SiteHeader() {
         solid ? "bg-plum-950/85 backdrop-blur-[16px]" : "bg-transparent"
       }`}
     >
-      <div className={`${container} flex h-[72px] items-center justify-between gap-6`}>
+      <div className={`${gutter} flex h-[72px] items-center justify-between gap-6`}>
         <Link
           href="/"
           prefetch={false}
@@ -116,7 +116,7 @@ export function SiteHeader() {
           id="mobile-menu"
           className="fixed inset-x-0 top-[72px] bottom-0 overflow-y-auto bg-plum-950 lg:hidden"
         >
-          <nav aria-label="Main" className={`${container} py-10`}>
+          <nav aria-label="Main" className={`${gutter} py-10`}>
             <ul className="flex flex-col gap-6">
               {navLinks.map((link, index) => (
                 <li key={link.href}>

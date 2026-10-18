@@ -80,7 +80,7 @@ export function HeroHeadline({ as: Tag, segments, reducedMotion }: HeroHeadlineP
   return (
     <Tag
       ref={ref}
-      className="mb-6 font-display text-[clamp(44px,7vw,100px)] leading-[0.9] font-extrabold tracking-[-0.015em] text-plum-50 uppercase [font-variation-settings:'wdth'_75,'opsz'_96]"
+      className="mb-7 font-display md:max-w-[min(880px,60vw)] text-[clamp(44px,7vw,100px)] leading-[0.9] font-extrabold tracking-[-0.015em] text-plum-50 uppercase [font-variation-settings:'wdth'_75,'opsz'_96]"
     >
       {words.map((word, index) => (
         <Fragment key={index}>

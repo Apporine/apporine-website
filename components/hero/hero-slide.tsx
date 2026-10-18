@@ -3,6 +3,7 @@
 import { motion, type Variants } from "motion/react";
 import { ButtonLink } from "@/components/button-link";
 import { GateMark } from "@/components/icons/gate-mark";
+import { gutter } from "@/components/layout";
 import { HeroHeadline } from "./hero-headline";
 import { HeroMedia } from "./hero-media";
 import { EASE_BRAND, EXIT_S, TEXT_ENTER_DELAY_S } from "./hero-motion";
@@ -50,9 +51,14 @@ const EYEBROW = { delay: TEXT_ENTER_DELAY_S, duration: 0.4, rise: 0 };
 const COPY = { delay: TEXT_ENTER_DELAY_S + 0.35, duration: 0.5, rise: 16 };
 const BUTTONS = { delay: TEXT_ENTER_DELAY_S + 0.5, duration: 0.5, rise: 16 };
 
+/** Barely visible halo that lifts body copy off busy video frames. */
+const SOFT_TEXT_SHADOW = "[text-shadow:0_1px_24px_rgba(18,4,26,0.8)]";
+
 function Subheadline({ segments }: { segments: TextSegment[] }) {
   return (
-    <p className="mb-5 font-sans text-[clamp(20px,2vw,28px)] leading-[1.3] font-medium tracking-[-0.005em] text-plum-50">
+    <p
+      className={`mb-5 max-w-[640px] font-sans text-[clamp(20px,2vw,28px)] leading-[1.3] font-medium tracking-[-0.005em] text-plum-50 ${SOFT_TEXT_SHADOW}`}
+    >
       {segments.map((segment, index) =>
         segment.accent ? (
           <em key={index} className="font-serif font-normal tracking-normal text-citrine italic">
@@ -97,6 +103,7 @@ export function HeroSlide({
     >
       <HeroMedia
         media={slide.media}
+        scrim={slide.scrim}
         isActive={isActive}
         isLoadTarget={isLoadTarget}
         playing={playing}
@@ -105,8 +112,11 @@ export function HeroSlide({
         priority={index === 0}
       />
 
-      <div className="relative mx-auto flex w-full max-w-[1440px] flex-1 flex-col justify-end px-5 pt-[120px] pb-[120px] md:justify-center md:px-8 lg:px-16">
-        <div className="w-full md:max-w-[600px] md:-translate-y-[4vh] lg:max-w-[680px]">
+      <div
+        className={`${gutter} relative flex flex-1 flex-col justify-end pt-[120px] pb-[120px] md:justify-center`}
+      >
+        {/* Each text element sets its own max width (spec section 4). */}
+        <div className="md:-translate-y-[4vh]">
           <motion.div
             initial={false}
             animate={isActive ? "shown" : "hidden"}
@@ -114,7 +124,7 @@ export function HeroSlide({
           >
             <motion.p
               variants={variant(EYEBROW)}
-              className="mb-6 flex items-center gap-3 font-mono text-xs leading-[1.3] font-medium tracking-[0.18em] text-plum-300 uppercase"
+              className="mb-7 flex items-center gap-3 font-mono text-xs leading-[1.3] font-medium tracking-[0.18em] text-plum-300 uppercase"
             >
               <GateMark size={14} className="shrink-0 text-citrine" />
               {slide.eyebrow}
@@ -128,7 +138,10 @@ export function HeroSlide({
 
             <motion.div variants={variant(COPY)}>
               {slide.subheadline && <Subheadline segments={slide.subheadline} />}
-              <p className="mb-9 font-sans text-[clamp(16px,1.25vw,19px)] leading-[1.6] text-plum-300">
+              {/* Mobile: brighter, slightly heavier copy for readability over video. */}
+              <p
+                className={`mb-10 max-w-[34rem] font-sans text-base leading-[1.6] font-[450] text-plum-100 md:text-[clamp(16px,1.25vw,19px)] md:font-normal md:text-plum-300 ${SOFT_TEXT_SHADOW}`}
+              >
                 {slide.paragraph}
               </p>
             </motion.div>
