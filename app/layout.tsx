@@ -11,11 +11,15 @@ const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   axes: ["wdth", "opsz"],
   display: "swap",
-  // The generated fallback is sized for the normal width; the headline uses
-  // the condensed width, so globals.css supplies a condensed fallback instead.
-  adjustFontFallback: false,
-  variable: "--font-bricolage",
 });
+
+/*
+ * next/font's generated fallback for Bricolage is sized for the normal width,
+ * but the headline uses the condensed width, so swapping fonts would reflow it.
+ * Expose only the self hosted family name; globals.css follows it with a
+ * condensed fallback (see "Bricolage Condensed Fallback").
+ */
+const bricolageFace = bricolage.style.fontFamily.split(",")[0];
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -52,7 +56,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-GB"
-      className={`${bricolage.variable} ${instrumentSans.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable}`}
+      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable}`}
+      style={{ "--font-bricolage": bricolageFace } as React.CSSProperties}
     >
       <body>{children}</body>
     </html>
