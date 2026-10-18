@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/*
+ * Apporine design tokens (source: _brief/docs/04-design-tokens.css).
+ * Colours and motion durations live on :root under their original names.
+ * Fonts, easing and radius are declared in @theme below so Tailwind generates
+ * utilities for them; @theme also emits them on :root under the same names.
+ */
+:root {
+  /* Plum scale */
+  --plum-950: #12041a;
+  --plum-900: #1e0628;
+  --plum-800: #2e0a3a; /* Imperial Plum */
+  --plum-700: #44145a;
+  --plum-600: #5b2a78;
+  --plum-400: #9c7bbe;
+  --plum-300: #c9b3de;
+  --plum-200: #dcc9ea;
+  --plum-100: #efe6f6; /* Lilac Mist */
+  --plum-50: #fbf9fc; /* Pearl */
+
+  /* Accents */
+  --orchid: #a53bef;
+  --orchid-deep: #7a1fb8;
+  --citrine: #f5e663;
+  --citrine-hover: #e9d84f;
+  --citrine-pressed: #d9c73e;
+
+  /* States (forms and product only) */
+  --error: #e5484d;
+  --success: #2fbf71;
+
+  /* Motion */
+  --dur-micro: 160ms;
+  --dur-standard: 320ms;
+  --dur-reveal: 700ms;
+  --dur-crossfade: 1200ms;
+}
+
+@theme {
+  /*
+   * Typography. The first family is the self hosted next/font variable
+   * (set on <html> in app/layout.tsx); the fallbacks match the tokens.
+   */
+  --font-display:
+    var(--font-bricolage), "Bricolage Condensed Fallback", "Arial Narrow", Arial, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans:
+    var(--font-instrument-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:
+    var(--font-ibm-plex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Radius */
+  --radius-card: 6px;
+  --radius-pill: 999px;
+}
+
+/*
+ * Fallback shown while Bricolage Grotesque loads. Glyphs are scaled to the
+ * width of the condensed headline (wdth 75, weight 800), so the headline wraps
+ * the same way before and after the swap: no layout shift. Line heights do not
+ * change because the headline line-height is a fixed 0.9em.
+ */
+@font-face {
+  font-family: "Bricolage Condensed Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Roboto Bold"), local("Roboto-Bold");
+  font-weight: 800;
+  size-adjust: 52%;
+}
+
+@theme inline {
+  /* Only brand colours are available as utilities (bg-plum-950, text-citrine…). */
+  --color-*: initial;
+  --color-plum-950: var(--plum-950);
+  --color-plum-900: var(--plum-900);
+  --color-plum-800: var(--plum-800);
+  --color-plum-700: var(--plum-700);
+  --color-plum-600: var(--plum-600);
+  --color-plum-400: var(--plum-400);
+  --color-plum-300: var(--plum-300);
+  --color-plum-200: var(--plum-200);
+  --color-plum-100: var(--plum-100);
+  --color-plum-50: var(--plum-50);
+  --color-orchid: var(--orchid);
+  --color-orchid-deep: var(--orchid-deep);
+  --color-citrine: var(--citrine);
+  --color-citrine-hover: var(--citrine-hover);
+  --color-citrine-pressed: var(--citrine-pressed);
+  --color-error: var(--error);
+  --color-success: var(--success);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--plum-950);
+    color: var(--plum-50);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Hero progress bar fill; driven by animation-play-state for pause support. */
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

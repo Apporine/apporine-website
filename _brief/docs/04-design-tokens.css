@@ -1,0 +1,42 @@
+/* Apporine design tokens. Imperial Plum and Citrine. Locked October 2026. */
+:root {
+  /* Plum scale */
+  --plum-950: #12041A;
+  --plum-900: #1E0628;
+  --plum-800: #2E0A3A; /* Imperial Plum */
+  --plum-700: #44145A;
+  --plum-600: #5B2A78;
+  --plum-400: #9C7BBE;
+  --plum-300: #C9B3DE;
+  --plum-200: #DCC9EA;
+  --plum-100: #EFE6F6; /* Lilac Mist */
+  --plum-50:  #FBF9FC; /* Pearl */
+
+  /* Accents */
+  --orchid: #A53BEF;
+  --orchid-deep: #7A1FB8;
+  --citrine: #F5E663;
+  --citrine-hover: #E9D84F;
+  --citrine-pressed: #D9C73E;
+
+  /* States (forms and product only) */
+  --error: #E5484D;
+  --success: #2FBF71;
+
+  /* Typography */
+  --font-display: "Bricolage Grotesque", "Arial Narrow", Arial, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-micro: 160ms;
+  --dur-standard: 320ms;
+  --dur-reveal: 700ms;
+  --dur-crossfade: 1200ms;
+
+  /* Radius */
+  --radius-card: 6px;
+  --radius-pill: 999px;
+}

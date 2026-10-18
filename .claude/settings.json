@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(shutdown*)",
+      "Bash(format *)",
+      "Read(~/.ssh/**)"
+    ]
+  }
+}
