@@ -8,6 +8,7 @@ export const routes = {
   products: "/products",
   // Later this will point to the Relyxus website.
   relyxus: "/products/relyxus",
+  orion: "/products/orion",
   build: "/build",
   industries: "/industries",
   financialServices: "/industries/financial-services",
@@ -26,6 +27,12 @@ export const routes = {
   careers: "/careers",
   press: "/press",
   contact: "/contact",
+  trust: "/trust",
+  security: "/security",
+  privacy: "/privacy",
+  cookies: "/cookies",
+  terms: "/terms",
+  accessibility: "/accessibility",
 } as const;
 
 export type RoutePath = (typeof routes)[keyof typeof routes];
@@ -38,6 +45,11 @@ export const anchors = {
   start: `${routes.build}#start`,
 } as const;
 
+/** Links that preselect a contact topic. */
+export const contactTopics = {
+  security: `${routes.contact}?topic=security`,
+} as const;
+
 /**
  * Pages not built yet. Each has an app/<path>/page.tsx that renders the
  * coming soon template with "<name> · Apporine" as its title. When a page is
@@ -46,6 +58,7 @@ export const anchors = {
 export const comingSoonPages: { path: RoutePath; name: string }[] = [
   { path: routes.products, name: "Products" },
   { path: routes.relyxus, name: "Relyxus" },
+  { path: routes.orion, name: "Orion" },
   { path: routes.build, name: "What we build" },
   { path: routes.industries, name: "Industries" },
   { path: routes.financialServices, name: "Financial services" },
@@ -64,4 +77,10 @@ export const comingSoonPages: { path: RoutePath; name: string }[] = [
   { path: routes.careers, name: "Careers" },
   { path: routes.press, name: "Press" },
   { path: routes.contact, name: "Contact" },
+  { path: routes.trust, name: "Trust centre" },
+  { path: routes.security, name: "Security" },
+  { path: routes.privacy, name: "Privacy" },
+  { path: routes.cookies, name: "Cookies" },
+  { path: routes.terms, name: "Terms" },
+  { path: routes.accessibility, name: "Accessibility" },
 ];
