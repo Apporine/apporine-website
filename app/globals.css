@@ -272,3 +272,146 @@
     filter: drop-shadow(0 0 3px rgba(165, 59, 239, 0.4));
   }
 }
+
+/*
+ * Homepage sections 3 to 13 (07-homepage-spec.md). Decorative layers sit
+ * behind the content (each section is an isolated stacking context). Reduced
+ * motion: everything here is static.
+ */
+@layer components {
+  /* Default entrance: fade in and rise 24px, 700ms, siblings 80ms apart (components/section/reveal.tsx). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 700ms var(--ease-brand) var(--reveal-delay, 0ms),
+      transform 700ms var(--ease-brand) var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-shown] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Headline lines rise from their masks, 700ms, 90ms apart (components/section/section-headline.tsx). */
+  .line-reveal [data-word] > span {
+    transform: translateY(110%);
+    transition: transform 700ms var(--ease-brand) calc(var(--line, 0) * 90ms);
+  }
+
+  .line-reveal[data-shown] [data-word] > span {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      transform: none;
+      transition: opacity 200ms linear;
+    }
+
+    .line-reveal {
+      opacity: 0;
+      transition: opacity 200ms linear;
+    }
+
+    .line-reveal[data-shown] {
+      opacity: 1;
+    }
+
+    .line-reveal [data-word] > span {
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Film grain at 3%, as over the hero: tiled SVG noise, blended. */
+  .film-grain {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Section 9: faint blueprint grid, 1px lines every 64px. */
+  .blueprint-grid {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(201, 179, 222, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 179, 222, 0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /*
+   * Section 9: a 2px citrine line at 8% sweeping top to bottom every 8 seconds.
+   * The line is the bottom edge of a section sized layer, so a percentage
+   * transform carries it across the whole section.
+   */
+  .blueprint-scan {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-bottom: 2px solid rgba(245, 230, 99, 0.08);
+    animation: blueprint-scan 8s linear infinite;
+  }
+
+  /* Section 5: Orion's stars twinkle gently (duration and delay set per star). */
+  .orion-star {
+    animation: orion-twinkle 4s ease-in-out infinite alternate;
+  }
+
+  /* Section 7: the icon strokes draw in again when the tile is hovered or focused. */
+  .capability-icon > * {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .group:is(:hover, :has(:focus-visible)) .capability-icon > * {
+      animation: icon-draw 700ms var(--ease-brand) both;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blueprint-scan {
+      display: none;
+    }
+
+    .orion-star {
+      animation: none;
+    }
+  }
+}
+
+@keyframes blueprint-scan {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes orion-twinkle {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes icon-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
