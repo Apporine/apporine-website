@@ -59,8 +59,7 @@ export function Film({ name, mobileName = name, className = "", focalPoint, eage
   }, [playing, base]);
 
   return (
-    // "View" for the Precision cursor; inside a card, the card's own state wins.
-    <div ref={ref} aria-hidden="true" data-cursor="view" className="absolute inset-0 overflow-hidden">
+    <div ref={ref} aria-hidden="true" className="absolute inset-0 overflow-hidden">
       <picture>
         {mobilePoster !== desktopPoster && (
           <source media="(max-width: 767px)" srcSet={mobilePoster} type="image/webp" />

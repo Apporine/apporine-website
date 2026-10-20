@@ -44,7 +44,7 @@ export function ButtonLink({
       // Destinations are mostly placeholders for now: no prefetch on load.
       prefetch={false}
       onClick={onClick}
-      // The Precision cursor: magnetic pull and a ring around the button.
+      // The custom cursor steps aside: the button shows its own hover style.
       data-cursor="button"
       className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
     >

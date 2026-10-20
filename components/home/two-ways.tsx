@@ -46,7 +46,7 @@ const FILM_FADE = "linear-gradient(180deg, rgba(18,4,26,0) 40%, var(--plum-950) 
 
 function Card({ card }: { card: WayCard }) {
   return (
-    <article data-surface="dark" data-cursor="open" className="group/card relative isolate flex h-full min-h-[560px] flex-col overflow-hidden rounded-[28px] bg-plum-950 transition-transform duration-240 ease-brand hover:-translate-y-1.5 has-focus-visible:-translate-y-1.5 motion-reduce:hover:translate-y-0">
+    <article data-surface="dark" data-cursor="card" className="group/card relative isolate flex h-full min-h-[560px] flex-col overflow-hidden rounded-[28px] bg-plum-950 outline-1 -outline-offset-1 outline-transparent transition-[translate,outline-color] duration-240 ease-brand hover:-translate-y-1.5 hover:outline-citrine/50 has-focus-visible:-translate-y-1.5 motion-reduce:hover:translate-y-0">
       {/* Top 55% of the 560px card: the living film inset. */}
       <div className="relative h-[308px] shrink-0">
         <Film

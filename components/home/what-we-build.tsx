@@ -52,7 +52,7 @@ export function WhatWeBuild() {
         {capabilities.map((capability, index) => (
           <Reveal key={capability.title} as="li" index={index}>
             <div
-              data-cursor="open"
+              data-cursor="card"
               className={`${tile} group border border-plum-200 bg-[rgba(251,249,252,0.65)] backdrop-blur-[12px] transition-[translate,border-color] duration-240 ease-brand hover:-translate-y-1 hover:border-orchid has-focus-visible:border-orchid motion-reduce:hover:translate-y-0`}
             >
               <CapabilityIconSvg icon={capability.icon} />

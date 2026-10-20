@@ -51,7 +51,7 @@ export function Insights({ articles }: { articles: Article[] }) {
       <ul className="mt-14 grid gap-6 md:mt-20 md:grid-cols-3">
         {articles.slice(0, INSIGHTS_SHOWN).map((article, index) => (
           <Reveal key={article.href} as="li" index={index}>
-            <article data-cursor="open" className="relative">
+            <article data-cursor="card" className="relative">
               <div className="relative mb-6 aspect-[16/10] overflow-hidden rounded-[24px] bg-plum-200">
                 <Image src={article.cover} alt={article.coverAlt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
               </div>
