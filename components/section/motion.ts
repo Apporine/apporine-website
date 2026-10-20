@@ -15,9 +15,6 @@ export const STAGGER_MS = 80;
 /** Reduced motion: every entrance becomes a 200ms fade. */
 export const REDUCED_FADE_S = 0.2;
 
-/** Entrances start once 20% of the block is in view, and play once. */
-export const VIEWPORT = { once: true, amount: 0.2 } as const;
-
 /** True when the visitor asks for reduced motion. False on the server. */
 export function useReducedMotion(): boolean {
   return useMediaQuery("(prefers-reduced-motion: reduce)");

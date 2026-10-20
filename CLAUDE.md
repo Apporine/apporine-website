@@ -33,6 +33,7 @@ The official website of Apporine, an enterprise product company. Phase 1 is the 
 - Every path is in `lib/routes.ts` (`routes`, `anchors`). Link to pages through it, never with a hard coded string.
 - Pages not built yet are listed in `comingSoonPages` with their title name. Each has a small `app/<path>/page.tsx` rendering `components/coming-soon.tsx` (monolith poster at 35%, Falcon eyebrow, “This page is being engineered *pristine.*”, Back to home), titled “<name> · Apporine”.
 - To build a real page: replace its `app/<path>/page.tsx` and remove its entry from `comingSoonPages`. The navigation needs no change. Unknown paths return a real 404.
+- The five "Latest from Apporine" destinations (Relyxus, Orion, the cost of problems insight, Trust, Careers) use the story page template, `components/story-page.tsx` (spec 09-latest-section-spec.md section 8). Their content is in `lib/latest.ts`, which also feeds the homepage mosaic (`components/home/latest/`).
 
 ## Commands
 - `npm run dev`: local development at http://localhost:3000
