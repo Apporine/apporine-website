@@ -24,16 +24,37 @@
   --ivory: #f7f4ee;
 
   /*
-   * Ink readability scrim where text always shows over a film: the story
-   * banners, and the mosaic cards under 1024px. Taller than the spec
-   * gradient so every line keeps 4.5:1 (agreed with the founders).
+   * Mosaic cards under 1024px, where every card shows all its text: taller
+   * than the spec gradient so every line keeps 4.5:1 (agreed with the founders).
    */
-  --story-scrim: linear-gradient(
+  --latest-scrim: linear-gradient(
     0deg,
     rgb(11 10 13 / 0.92) 0%,
     rgb(11 10 13 / 0.82) 50%,
     rgb(11 10 13 / 0.6) 72%,
     rgb(11 10 13 / 0) 100%
+  );
+
+  /*
+   * Story banners: only the text area is darkened, the film stays at full
+   * brightness elsewhere (as on the hero). From 768px a left to right
+   * gradient behind the text plus a soft bottom fade into the page; on
+   * phones a bottom to top gradient under the text.
+   */
+  --story-scrim:
+    linear-gradient(0deg, rgb(11 10 13 / 0.45) 0%, rgb(11 10 13 / 0) 30%),
+    linear-gradient(
+      90deg,
+      rgb(11 10 13 / 0.84) 0%,
+      rgb(11 10 13 / 0.6) 38%,
+      rgb(11 10 13 / 0.18) 62%,
+      rgb(11 10 13 / 0) 75%
+    );
+  --story-scrim-mobile: linear-gradient(
+    0deg,
+    rgb(11 10 13 / 0.9) 0%,
+    rgb(11 10 13 / 0.66) 40%,
+    rgb(11 10 13 / 0) 70%
   );
 
   /* Accents */
@@ -454,7 +475,7 @@
    * (agreed with the founders). From 1024px: the spec gradient.
    */
   .latest-scrim {
-    background-image: var(--story-scrim);
+    background-image: var(--latest-scrim);
   }
 
   .latest-text {

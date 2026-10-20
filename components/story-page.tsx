@@ -34,17 +34,25 @@ export function StoryPage({ path }: { path: RoutePath }) {
       <section className="relative isolate flex h-[70vh] min-h-[520px] items-end overflow-hidden bg-ink">
         <div className="absolute inset-0 -z-10">
           <Film name={story.film} focalPoint={story.focalPoint} eager />
-          {/* The readability scrim (--story-scrim in app/globals.css). */}
-          <div aria-hidden="true" className="absolute inset-0 bg-(image:--story-scrim)" />
+          {/* Darkens the text area only (--story-scrim in app/globals.css); the film itself is never dimmed. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-(image:--story-scrim-mobile) md:bg-(image:--story-scrim)"
+          />
         </div>
         <div className={`${gutter} pb-[clamp(48px,6vw,96px)]`}>
-          <Eyebrow tone="dark">{story.category}</Eyebrow>
+          {/* Measures keep the text inside the darkened area, so it holds 4.5:1 over the film. */}
+          <Eyebrow tone="dark" onFilm>
+            {story.category}
+          </Eyebrow>
           <h1
-            className={`${displayClass} mb-7 max-w-[min(1100px,80vw)] text-[clamp(44px,6vw,96px)] leading-[0.9] text-plum-50 max-md:max-w-none`}
+            className={`${displayClass} mb-7 text-[clamp(44px,6vw,96px)] leading-[0.9] text-plum-50 md:max-w-[min(820px,52vw)]`}
           >
             {story.heading}
           </h1>
-          <LeadParagraph tone="dark">{story.description}</LeadParagraph>
+          <LeadParagraph tone="dark" onFilm className="md:max-w-[28rem]">
+            {story.description}
+          </LeadParagraph>
         </div>
       </section>
 
