@@ -19,6 +19,44 @@
   --plum-100: #efe6f6; /* Lilac Mist */
   --plum-50: #fbf9fc; /* Pearl */
 
+  /* Neutrals (09-latest-section-spec.md) */
+  --ink: #0b0a0d;
+  --ivory: #f7f4ee;
+
+  /*
+   * Mosaic cards under 1024px, where every card shows all its text: taller
+   * than the spec gradient so every line keeps 4.5:1 (agreed with the founders).
+   */
+  --latest-scrim: linear-gradient(
+    0deg,
+    rgb(11 10 13 / 0.92) 0%,
+    rgb(11 10 13 / 0.82) 50%,
+    rgb(11 10 13 / 0.6) 72%,
+    rgb(11 10 13 / 0) 100%
+  );
+
+  /*
+   * Story banners: only the text area is darkened, the film stays at full
+   * brightness elsewhere (as on the hero). From 768px a left to right
+   * gradient behind the text plus a soft bottom fade into the page; on
+   * phones a bottom to top gradient under the text.
+   */
+  --story-scrim:
+    linear-gradient(0deg, rgb(11 10 13 / 0.45) 0%, rgb(11 10 13 / 0) 30%),
+    linear-gradient(
+      90deg,
+      rgb(11 10 13 / 0.84) 0%,
+      rgb(11 10 13 / 0.6) 38%,
+      rgb(11 10 13 / 0.18) 62%,
+      rgb(11 10 13 / 0) 75%
+    );
+  --story-scrim-mobile: linear-gradient(
+    0deg,
+    rgb(11 10 13 / 0.9) 0%,
+    rgb(11 10 13 / 0.66) 40%,
+    rgb(11 10 13 / 0) 70%
+  );
+
   /* Accents */
   --orchid: #a53bef;
   --orchid-deep: #7a1fb8;
@@ -84,6 +122,8 @@
   --color-plum-200: var(--plum-200);
   --color-plum-100: var(--plum-100);
   --color-plum-50: var(--plum-50);
+  --color-ink: var(--ink);
+  --color-ivory: var(--ivory);
   --color-orchid: var(--orchid);
   --color-orchid-deep: var(--orchid-deep);
   --color-citrine: var(--citrine);
@@ -413,5 +453,146 @@
   }
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+/*
+ * Latest from Apporine, the Living Mosaic (09-latest-section-spec.md,
+ * components/home/latest/). From 1024px the open card ([data-expanded])
+ * grows to 2.6 and alone shows its description and "Read more"; below
+ * 1024px every card shows all its text. Reduced motion: no zoom, the open
+ * state changes instantly and the text fades in over 150ms.
+ */
+@layer components {
+  /* Layers 1 and 2 zoom together, so the film never jumps from its still. */
+  .latest-still {
+    animation: latest-still-zoom 12s ease-in-out infinite alternate;
+  }
+
+  /*
+   * Layer 3. Below 1024px every card shows all its text, so the Ink rises
+   * higher than the spec gradient to keep 4.5:1 over the brightest stills
+   * (agreed with the founders). From 1024px: the spec gradient.
+   */
+  .latest-scrim {
+    background-image: var(--latest-scrim);
+  }
+
+  .latest-text {
+    padding: 28px;
+  }
+
+  @media (min-width: 1024px) {
+    .latest-scrim {
+      background-image: linear-gradient(0deg, rgb(11 10 13 / 0.92) 0%, rgb(11 10 13 / 0.55) 40%, rgb(11 10 13 / 0) 70%);
+    }
+
+    .latest-card {
+      flex: 1 1 0;
+      min-width: 0;
+      transition: flex-grow 600ms var(--ease-brand);
+    }
+
+    .latest-text {
+      transition: padding 600ms var(--ease-brand);
+    }
+  }
+
+  /* 1024 to 1279px: narrow cards are 123 to 156px wide; 20px padding keeps every word whole. */
+  @media (min-width: 1024px) and (max-width: 1279.98px) {
+    .latest-card:not([data-expanded]) .latest-text {
+      padding: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+
+    .latest-card[data-expanded] {
+      flex-grow: 2.6;
+    }
+
+    .latest-heading {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      font-size: 17px;
+      line-height: 1.3;
+      transition: font-size 400ms var(--ease-brand);
+    }
+
+    .latest-card[data-expanded] .latest-heading {
+      -webkit-line-clamp: none;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    /* Collapsed to no height on narrow cards. */
+    .latest-more {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 300ms var(--ease-brand);
+    }
+
+    .latest-card[data-expanded] .latest-more {
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 450ms var(--ease-brand) 200ms;
+    }
+
+    /* Set at the open card's final width (5 cards, 4 gaps of 12px), so it never reflows as the card grows. */
+    .latest-description {
+      width: min(28rem, calc((100cqw - 48px) * 2.6 / 6.6 - 58px));
+    }
+
+    .latest-more-item {
+      visibility: hidden;
+      opacity: 0;
+      translate: 0 12px;
+      transition:
+        opacity 200ms var(--ease-brand),
+        translate 200ms var(--ease-brand),
+        visibility 0s 200ms;
+    }
+
+    .latest-card[data-expanded] .latest-more-item {
+      visibility: visible;
+      opacity: 1;
+      translate: none;
+      transition:
+        opacity 450ms var(--ease-brand) var(--item-delay, 200ms),
+        translate 450ms var(--ease-brand) var(--item-delay, 200ms),
+        visibility 0s var(--item-delay, 200ms);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .latest-still {
+      animation: none;
+    }
+
+    .latest-card,
+    .latest-text,
+    .latest-heading,
+    .latest-more,
+    .latest-card[data-expanded] .latest-more {
+      transition: none;
+    }
+
+    .latest-more-item,
+    .latest-card[data-expanded] .latest-more-item {
+      translate: none;
+      transition:
+        opacity 150ms linear,
+        visibility 0s;
+    }
+  }
+}
+
+@keyframes latest-still-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
   }
 }

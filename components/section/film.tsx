@@ -12,6 +12,10 @@ type FilmProps = {
   mobileName?: string;
   /** Size, position and filters of the poster and the video. */
   className?: string;
+  /** CSS object-position of the poster and the video. */
+  focalPoint?: string;
+  /** The poster is the page's main image: load it at once, at high priority. */
+  eager?: boolean;
 };
 
 /**
@@ -20,7 +24,7 @@ type FilmProps = {
  * near the viewport, and it plays only while in view. Reduced motion shows
  * the poster only. Decorative.
  */
-export function Film({ name, mobileName = name, className = "" }: FilmProps) {
+export function Film({ name, mobileName = name, className = "", focalPoint, eager = false }: FilmProps) {
   const ref = useRef<HTMLDivElement>(null);
   const near = useInView(ref, { margin: "50% 0px 50% 0px" });
   const inView = useInView(ref);
@@ -60,7 +64,15 @@ export function Film({ name, mobileName = name, className = "" }: FilmProps) {
         {mobilePoster !== desktopPoster && (
           <source media="(max-width: 767px)" srcSet={mobilePoster} type="image/webp" />
         )}
-        <img src={desktopPoster} alt="" loading="lazy" decoding="async" className={`absolute inset-0 size-full object-cover ${className}`} />
+        <img
+          src={desktopPoster}
+          alt=""
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : undefined}
+          decoding="async"
+          style={{ objectPosition: focalPoint }}
+          className={`absolute inset-0 size-full object-cover ${className}`}
+        />
       </picture>
       {requested && (
         <video
@@ -71,6 +83,7 @@ export function Film({ name, mobileName = name, className = "" }: FilmProps) {
           preload="auto"
           poster={isMobile ? mobilePoster : desktopPoster}
           tabIndex={-1}
+          style={{ objectPosition: focalPoint }}
           className={`absolute inset-0 size-full object-cover ${className}`}
         >
           <source src={`${base}.webm`} type="video/webm" />

@@ -1,6 +1,8 @@
-import { ComingSoon, comingSoonMetadata } from "@/components/coming-soon";
+import { StoryPage, storyMetadata } from "@/components/story-page";
 import { routes } from "@/lib/routes";
 
-export const metadata = comingSoonMetadata(routes.relyxus);
+export const metadata = storyMetadata(routes.relyxus);
 
-export default ComingSoon;
+export default function Page() {
+  return <StoryPage path={routes.relyxus} />;
+}

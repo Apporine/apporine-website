@@ -22,6 +22,7 @@ export const routes = {
   aiInProduction: "/insights/ai-in-production",
   operationalResilience: "/insights/operational-resilience",
   industryPerspectives: "/insights/industry-perspectives",
+  costOfProblems: "/insights/the-cost-of-the-problems-youve-learned-to-live-with",
   company: "/company",
   leadership: "/company/leadership",
   careers: "/careers",
@@ -57,8 +58,6 @@ export const contactTopics = {
  */
 export const comingSoonPages: { path: RoutePath; name: string }[] = [
   { path: routes.products, name: "Products" },
-  { path: routes.relyxus, name: "Relyxus" },
-  { path: routes.orion, name: "Orion" },
   { path: routes.build, name: "What we build" },
   { path: routes.industries, name: "Industries" },
   { path: routes.financialServices, name: "Financial services" },
@@ -74,10 +73,8 @@ export const comingSoonPages: { path: RoutePath; name: string }[] = [
   { path: routes.industryPerspectives, name: "Industry perspectives" },
   { path: routes.company, name: "Company" },
   { path: routes.leadership, name: "Leadership" },
-  { path: routes.careers, name: "Careers" },
   { path: routes.press, name: "Press" },
   { path: routes.contact, name: "Contact" },
-  { path: routes.trust, name: "Trust centre" },
   { path: routes.security, name: "Security" },
   { path: routes.privacy, name: "Privacy" },
   { path: routes.cookies, name: "Cookies" },

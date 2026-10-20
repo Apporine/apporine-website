@@ -5,6 +5,8 @@ type SectionProps = {
   labelledBy: string;
   /** Background utility, e.g. "bg-plum-950" (rhythm table in 07-homepage-spec.md). */
   background: string;
+  /** Vertical padding; defaults to `sectionPadding`. */
+  padding?: string;
   className?: string;
   children: React.ReactNode;
 };
@@ -22,10 +24,10 @@ export const sectionPadding = "py-[88px] md:py-[clamp(96px,12vw,176px)]";
  * Homepage section: background, the hero side margin (so every left edge
  * lines up with the hero headline) and the vertical padding.
  */
-export function Section({ labelledBy, background, className = "", children }: SectionProps) {
+export function Section({ labelledBy, background, padding = sectionPadding, className = "", children }: SectionProps) {
   return (
     <section aria-labelledby={labelledBy} className={`relative isolate ${deferredRendering} ${background} ${className}`}>
-      <div className={`${gutter} ${sectionPadding}`}>{children}</div>
+      <div className={`${gutter} ${padding}`}>{children}</div>
     </section>
   );
 }
