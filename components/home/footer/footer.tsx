@@ -90,7 +90,7 @@ export function Footer() {
   const companyDetails = companyDetailsSentence();
 
   return (
-    <footer className={`relative isolate overflow-hidden bg-plum-950 ${deferredRendering}`}>
+    <footer data-surface="dark" className={`relative isolate overflow-hidden bg-plum-950 ${deferredRendering}`}>
       <div className={`${gutter} pt-[88px] md:pt-[clamp(96px,10vw,144px)]`}>
         {/* 1. Statement band. */}
         <div className="flex flex-col items-start gap-8 border-b border-plum-700 pb-12 md:flex-row md:items-center md:justify-between md:pb-16">

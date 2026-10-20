@@ -39,7 +39,7 @@ function ArrowLink({ href, children, stretched = false }: { href: string; childr
 /** Section 11 (07-homepage-spec.md): the three latest articles. Rendered only from three articles up. */
 export function Insights({ articles }: { articles: Article[] }) {
   return (
-    <Section labelledBy="insights-title" background="bg-plum-100">
+    <Section labelledBy="insights-title" background="bg-plum-100" surface="light">
       <Reveal>
         <Eyebrow tone="light">{eyebrow}</Eyebrow>
       </Reveal>
@@ -51,7 +51,7 @@ export function Insights({ articles }: { articles: Article[] }) {
       <ul className="mt-14 grid gap-6 md:mt-20 md:grid-cols-3">
         {articles.slice(0, INSIGHTS_SHOWN).map((article, index) => (
           <Reveal key={article.href} as="li" index={index}>
-            <article className="relative">
+            <article data-cursor="open" className="relative">
               <div className="relative mb-6 aspect-[16/10] overflow-hidden rounded-[24px] bg-plum-200">
                 <Image src={article.cover} alt={article.coverAlt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
               </div>

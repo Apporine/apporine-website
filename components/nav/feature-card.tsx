@@ -43,7 +43,7 @@ export function FeatureCard({ feature, active, reducedMotion, onNavigate }: Feat
   const poster = `${base}-poster.webp`;
 
   return (
-    <div className="relative isolate flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[20px] bg-plum-900 p-[22px]">
+    <div data-surface="dark" className="relative isolate flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[20px] bg-plum-900 p-[22px]">
       {requested && (
         <video
           ref={videoRef}

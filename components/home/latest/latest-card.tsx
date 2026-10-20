@@ -38,6 +38,7 @@ export function LatestCard({ story, index, readMore, expanded, live, filmEnabled
         prefetch={false}
         aria-label={`${story.heading}, ${story.category}`}
         aria-describedby={descriptionId}
+        data-cursor="open"
         onPointerEnter={() => onActivate(index)}
         onFocus={() => onActivate(index)}
         className="group/card relative isolate flex size-full flex-col justify-end overflow-hidden rounded-[20px] border border-plum-300/14 bg-ink focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-citrine"

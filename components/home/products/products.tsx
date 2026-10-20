@@ -112,7 +112,7 @@ export function Products({ hasRelyxusScreenshot }: { hasRelyxusScreenshot: boole
   const fade = (seconds: number) => ({ duration: reducedMotion ? REDUCED_FADE_S : seconds, ease: EASE_BRAND });
 
   return (
-    <Section labelledBy="products-title" background="bg-plum-900">
+    <Section labelledBy="products-title" background="bg-plum-900" surface="dark">
       <Reveal>
         <Eyebrow tone="dark">{eyebrow}</Eyebrow>
       </Reveal>

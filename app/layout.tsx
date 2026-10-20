@@ -5,7 +5,10 @@ import {
   Instrument_Sans,
   Instrument_Serif,
 } from "next/font/google";
+import { Cursor } from "@/components/cursor";
 import { SiteHeader } from "@/components/site-header";
+import { SmoothScroll } from "@/components/smooth-scroll";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -60,9 +63,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${instrumentSans.variable} ${instrumentSerif.variable} ${ibmPlexMono.variable}`}
       style={{ "--font-bricolage": bricolageFace } as React.CSSProperties}
     >
-      <body>
+      {/* Pages are dark unless an area says otherwise (data-surface, for the cursor). */}
+      <body data-surface="dark">
+        <SmoothScroll />
         <SiteHeader />
         {children}
+        <Cursor />
       </body>
     </html>
   );

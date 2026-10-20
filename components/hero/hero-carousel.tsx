@@ -73,6 +73,7 @@ export function HeroCarousel({ slides }: { slides: Slide[] }) {
   return (
     <section
       aria-roledescription="carousel"
+      data-surface="dark"
       aria-label="Apporine highlights"
       // Focusable by click (not in the tab order) so arrow keys work anywhere in the hero.
       tabIndex={-1}

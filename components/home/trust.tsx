@@ -89,7 +89,7 @@ function StatusPill({ status }: { status: AssuranceStatus }) {
  */
 export function Trust() {
   return (
-    <Section labelledBy="trust-title" background="bg-plum-800" className="overflow-hidden">
+    <Section labelledBy="trust-title" background="bg-plum-800" surface="dark" className="overflow-hidden">
       <div aria-hidden="true" className="blueprint-grid" />
       <div aria-hidden="true" className="blueprint-scan" />
 

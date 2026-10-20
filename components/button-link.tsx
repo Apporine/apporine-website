@@ -44,6 +44,8 @@ export function ButtonLink({
       // Destinations are mostly placeholders for now: no prefetch on load.
       prefetch={false}
       onClick={onClick}
+      // The Precision cursor: magnetic pull and a ring around the button.
+      data-cursor="button"
       className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
     >
       {children}

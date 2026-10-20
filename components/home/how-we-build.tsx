@@ -122,7 +122,7 @@ export function HowWeBuild() {
   });
 
   return (
-    <section ref={sectionRef} aria-labelledby="how-we-build-title" className="relative isolate bg-plum-50 lg:motion-safe:h-[300vh]">
+    <section ref={sectionRef} aria-labelledby="how-we-build-title" data-surface="light" className="relative isolate bg-plum-50 lg:motion-safe:h-[300vh]">
       <div className="lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:flex lg:motion-safe:h-screen lg:motion-safe:items-center">
         <div className={`${gutter} ${sectionPadding} grid gap-14 lg:grid-cols-12 lg:gap-12 lg:motion-safe:py-0`}>
           <div className="lg:col-span-5">

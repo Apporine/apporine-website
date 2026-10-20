@@ -34,7 +34,7 @@ const SOFT_TEXT_SHADOW = "[text-shadow:0_1px_24px_rgba(18,4,26,0.8)]";
  */
 export function Invitation() {
   return (
-    <section aria-labelledby="invitation-title" className={`relative isolate flex min-h-[90vh] items-center overflow-hidden bg-plum-950 ${deferredRendering}`}>
+    <section aria-labelledby="invitation-title" data-surface="dark" className={`relative isolate flex min-h-[90vh] items-center overflow-hidden bg-plum-950 ${deferredRendering}`}>
       <div className="absolute inset-0 -z-10">
         <Film name="hero-03-bridge" mobileName="hero-03-bridge-mobile" className="object-center md:object-right" />
         <div

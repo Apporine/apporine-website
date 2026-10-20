@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { gutter } from "@/components/layout";
 import { Eyebrow } from "@/components/section/eyebrow";
+import { ParallaxLayer } from "@/components/parallax-layer";
 import { Film } from "@/components/section/film";
 import { LeadParagraph } from "@/components/section/lead-paragraph";
 import { displayClass, focusRingLight, lightBodyColour } from "@/components/section/tone";
@@ -31,9 +32,11 @@ export function StoryPage({ path }: { path: RoutePath }) {
 
   return (
     <main>
-      <section className="relative isolate flex h-[70vh] min-h-[520px] items-end overflow-hidden bg-ink">
+      <section data-surface="dark" className="relative isolate flex h-[70vh] min-h-[520px] items-end overflow-hidden bg-ink">
         <div className="absolute inset-0 -z-10">
-          <Film name={story.film} focalPoint={story.focalPoint} eager />
+          <ParallaxLayer>
+            <Film name={story.film} focalPoint={story.focalPoint} eager />
+          </ParallaxLayer>
           {/* Darkens the text area only (--story-scrim in app/globals.css); the film itself is never dimmed. */}
           <div
             aria-hidden="true"
@@ -56,7 +59,7 @@ export function StoryPage({ path }: { path: RoutePath }) {
         </div>
       </section>
 
-      <section className="bg-ivory px-6 py-[clamp(72px,8vw,128px)]">
+      <section data-surface="light" className="bg-ivory px-6 py-[clamp(72px,8vw,128px)]">
         <div className="mx-auto max-w-[44rem]">
           <p className={`mb-8 font-sans text-lg leading-[1.6] ${lightBodyColour}`}>{note}</p>
           <ul className="flex flex-wrap gap-x-8 gap-y-3">

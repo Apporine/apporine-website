@@ -97,6 +97,7 @@ export function MobileMenu({ open, reducedMotion, onClose }: MobileMenuProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
+          data-surface="dark"
           onKeyDown={(event) => trapTab(event, dialogRef.current)}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -107,12 +108,13 @@ export function MobileMenu({ open, reducedMotion, onClose }: MobileMenuProps) {
           {/* Same place as the capsule row, so the Falcon does not jump. */}
           <div className={`mt-5 flex h-[72px] shrink-0 items-center justify-between ${capsuleInset} ${capsulePadding}`}>
             <NavLogo onClick={navigate} />
-            <button type="button" onClick={() => onClose(true)} className={pillButton}>
+            <button type="button" onClick={() => onClose(true)} data-cursor="button" className={pillButton}>
               Close
             </button>
           </div>
 
-          <nav aria-label="Main" className={`${gutter} min-h-0 flex-1 overflow-y-auto py-6`}>
+          {/* Scrolls on its own while smooth scrolling is stopped behind the menu. */}
+          <nav aria-label="Main" data-lenis-prevent className={`${gutter} min-h-0 flex-1 overflow-y-auto py-6`}>
             <ul>
               {navItems.map((item, index) => {
                 const isExpanded = expanded === item.id;
