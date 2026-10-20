@@ -5,6 +5,8 @@ type SectionProps = {
   labelledBy: string;
   /** Background utility, e.g. "bg-plum-950" (rhythm table in 07-homepage-spec.md). */
   background: string;
+  /** Dark (plum, Ink) or light (Pearl, Lilac Mist): sets the Precision cursor colour. */
+  surface: "dark" | "light";
   /** Vertical padding; defaults to `sectionPadding`. */
   padding?: string;
   className?: string;
@@ -24,9 +26,9 @@ export const sectionPadding = "py-[88px] md:py-[clamp(96px,12vw,176px)]";
  * Homepage section: background, the hero side margin (so every left edge
  * lines up with the hero headline) and the vertical padding.
  */
-export function Section({ labelledBy, background, padding = sectionPadding, className = "", children }: SectionProps) {
+export function Section({ labelledBy, background, surface, padding = sectionPadding, className = "", children }: SectionProps) {
   return (
-    <section aria-labelledby={labelledBy} className={`relative isolate ${deferredRendering} ${background} ${className}`}>
+    <section aria-labelledby={labelledBy} data-surface={surface} className={`relative isolate ${deferredRendering} ${background} ${className}`}>
       <div className={`${gutter} ${padding}`}>{children}</div>
     </section>
   );

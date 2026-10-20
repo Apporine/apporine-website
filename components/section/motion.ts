@@ -24,3 +24,10 @@ export function useReducedMotion(): boolean {
 export function useFinePointer(): boolean {
   return useMediaQuery("(hover: hover) and (pointer: fine)");
 }
+
+/** Fine pointer and no reduced motion: smooth scrolling, parallax and the Precision cursor. */
+export function usePointerMotion(): boolean {
+  const finePointer = useFinePointer();
+  const reducedMotion = useReducedMotion();
+  return finePointer && !reducedMotion;
+}

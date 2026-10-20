@@ -136,6 +136,11 @@
 @layer base {
   html {
     color-scheme: dark;
+    /*
+     * Anchor targets land below the navigation: its 20px inset and 72px
+     * capsule, plus 24px. Smooth anchors read the same value (lib/smooth-scroll.ts).
+     */
+    scroll-padding-top: calc(20px + 72px + 24px);
   }
 
   body {
@@ -594,5 +599,118 @@
   }
   to {
     transform: scale(1.06);
+  }
+}
+
+/*
+ * The Precision cursor (components/cursor.tsx), fine pointers without reduced
+ * motion only. The loop moves the dot and the ring anchor with translate3d;
+ * everything else here is state: [data-surface] sets the colour (200ms cross
+ * fade), [data-state] the ring (250ms, --ease-brand).
+ */
+@layer components {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none !important;
+  }
+
+  /* Form fields and long selectable text keep the native text cursor. */
+  html.has-custom-cursor :is(input, textarea, select, [contenteditable="true"]) {
+    cursor: auto !important;
+  }
+
+  html.has-custom-cursor :is([data-cursor="text"], [data-cursor="text"] *) {
+    cursor: text !important;
+  }
+
+  .precision-cursor {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 100;
+    pointer-events: none;
+    color: var(--plum-50);
+    --ring-border: color-mix(in srgb, currentColor 70%, transparent);
+    transition:
+      color 200ms linear,
+      opacity 200ms linear;
+  }
+
+  .precision-cursor[data-surface="light"] {
+    color: var(--plum-800);
+    --ring-border: currentColor;
+  }
+
+  .precision-cursor:is([data-away], [data-state="text"]) {
+    opacity: 0;
+  }
+
+  .precision-cursor-dot,
+  .precision-cursor-anchor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    will-change: transform;
+  }
+
+  .precision-cursor-dot {
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+    border-radius: 50%;
+    background-color: currentColor;
+    transition: opacity 250ms var(--ease-brand);
+  }
+
+  .precision-cursor-ring {
+    --ring-size: 36px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ring-size);
+    height: var(--ring-size);
+    translate: -50% -50%;
+    border: 1px solid var(--ring-border);
+    border-radius: 50%;
+    contain: layout;
+    transition:
+      width 250ms var(--ease-brand),
+      height 250ms var(--ease-brand),
+      background-color 250ms var(--ease-brand),
+      scale 150ms var(--ease-brand);
+  }
+
+  .precision-cursor-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 250ms var(--ease-brand);
+  }
+
+  .precision-cursor[data-state="link"] .precision-cursor-ring {
+    --ring-size: 24px;
+    background-color: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .precision-cursor:is([data-state="open"], [data-state="view"]) .precision-cursor-ring {
+    --ring-size: 88px;
+    background-color: color-mix(in srgb, currentColor 8%, transparent);
+  }
+
+  .precision-cursor:is([data-state="open"], [data-state="view"]) .precision-cursor-label {
+    opacity: 1;
+  }
+
+  .precision-cursor:is([data-state="open"], [data-state="view"]) .precision-cursor-dot {
+    opacity: 0;
+  }
+
+  .precision-cursor[data-pressed] .precision-cursor-ring {
+    scale: 0.85;
   }
 }

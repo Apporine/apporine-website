@@ -23,7 +23,7 @@ export function comingSoonMetadata(path: RoutePath): Metadata {
 /** Placeholder for every destination that is not built yet (spec section 7). */
 export function ComingSoon() {
   return (
-    <main className="relative isolate flex min-h-[max(100svh,640px)] overflow-hidden bg-plum-950">
+    <main data-surface="dark" className="relative isolate flex min-h-[max(100svh,640px)] overflow-hidden bg-plum-950">
       {/* Decorative: the monolith poster, 35% opacity, right aligned. */}
       <picture>
         <source media="(max-width: 767px)" srcSet="/videos/hero-01-monolith-mobile-poster.webp" type="image/webp" />

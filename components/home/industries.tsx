@@ -275,7 +275,7 @@ function IndustryAccordion() {
 /** Section 8 (07-homepage-spec.md): the six industries, their costly problem and what we build. */
 export function Industries() {
   return (
-    <Section labelledBy="industries-title" background="bg-plum-950">
+    <Section labelledBy="industries-title" background="bg-plum-950" surface="dark">
       <Reveal>
         <Eyebrow tone="dark">{eyebrow}</Eyebrow>
       </Reveal>

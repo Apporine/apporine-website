@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { ParallaxLayer } from "@/components/parallax-layer";
 import { CROSSFADE_MS } from "./hero-motion";
 import type { SlideMedia, SlideScrim } from "./slides";
 
@@ -113,42 +114,45 @@ export function HeroMedia({
   const mobilePoster = media.mobile.poster;
 
   return (
-    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      {/* Fallback until a poster or video exists (slide 3 for now). */}
-      <div className="absolute inset-0 bg-linear-to-br from-plum-950 to-plum-800" />
+    <div aria-hidden="true" data-cursor="view" className="absolute inset-0 overflow-hidden">
+      {/* The film drifts with the parallax; the scrim below stays with the text. */}
+      <ParallaxLayer>
+        {/* Fallback until a poster or video exists (slide 3 for now). */}
+        <div className="absolute inset-0 bg-linear-to-br from-plum-950 to-plum-800" />
 
-      {desktopPoster && (
-        <picture>
-          {mobilePoster && mobilePoster !== desktopPoster && (
-            <source media="(max-width: 767px)" srcSet={mobilePoster} type="image/webp" />
-          )}
-          <img
-            src={desktopPoster}
-            alt=""
-            fetchPriority={priority ? "high" : "auto"}
-            loading={priority ? "eager" : "lazy"}
-            decoding="async"
+        {desktopPoster && (
+          <picture>
+            {mobilePoster && mobilePoster !== desktopPoster && (
+              <source media="(max-width: 767px)" srcSet={mobilePoster} type="image/webp" />
+            )}
+            <img
+              src={desktopPoster}
+              alt=""
+              fetchPriority={priority ? "high" : "auto"}
+              loading={priority ? "eager" : "lazy"}
+              decoding="async"
+              className="absolute inset-0 size-full object-cover object-center md:object-right"
+            />
+          </picture>
+        )}
+
+        {hasVideo && (
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            preload="metadata"
+            // Set after hydration so phones do not fetch the desktop poster.
+            poster={hydrated ? (rendition.poster ?? undefined) : undefined}
+            tabIndex={-1}
             className="absolute inset-0 size-full object-cover object-center md:object-right"
-          />
-        </picture>
-      )}
-
-      {hasVideo && (
-        <video
-          ref={videoRef}
-          muted
-          playsInline
-          preload="metadata"
-          // Set after hydration so phones do not fetch the desktop poster.
-          poster={hydrated ? (rendition.poster ?? undefined) : undefined}
-          tabIndex={-1}
-          className="absolute inset-0 size-full object-cover object-center md:object-right"
-        >
-          {sources.map((source) => (
-            <source key={source.src} src={source.src} type={source.type} />
-          ))}
-        </video>
-      )}
+          >
+            {sources.map((source) => (
+              <source key={source.src} src={source.src} type={source.type} />
+            ))}
+          </video>
+        )}
+      </ParallaxLayer>
 
       {/* Readability scrim, per slide (spec section 3). */}
       <div

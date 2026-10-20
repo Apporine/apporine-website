@@ -98,6 +98,7 @@ export function MegaPanel({
       ref={ref}
       id={id}
       data-nav-panel={item.id}
+      data-surface="light"
       role="region"
       aria-label={item.label}
       inert={!active}

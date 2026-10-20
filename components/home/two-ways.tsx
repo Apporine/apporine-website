@@ -46,7 +46,7 @@ const FILM_FADE = "linear-gradient(180deg, rgba(18,4,26,0) 40%, var(--plum-950) 
 
 function Card({ card }: { card: WayCard }) {
   return (
-    <article className="group/card relative isolate flex h-full min-h-[560px] flex-col overflow-hidden rounded-[28px] bg-plum-950 transition-transform duration-240 ease-brand hover:-translate-y-1.5 has-focus-visible:-translate-y-1.5 motion-reduce:hover:translate-y-0">
+    <article data-surface="dark" data-cursor="open" className="group/card relative isolate flex h-full min-h-[560px] flex-col overflow-hidden rounded-[28px] bg-plum-950 transition-transform duration-240 ease-brand hover:-translate-y-1.5 has-focus-visible:-translate-y-1.5 motion-reduce:hover:translate-y-0">
       {/* Top 55% of the 560px card: the living film inset. */}
       <div className="relative h-[308px] shrink-0">
         <Film
@@ -84,7 +84,7 @@ function Card({ card }: { card: WayCard }) {
 /** Section 4 (07-homepage-spec.md): products or a partnership, as two film cards. */
 export function TwoWays() {
   return (
-    <Section labelledBy="two-ways-title" background="bg-plum-50">
+    <Section labelledBy="two-ways-title" background="bg-plum-50" surface="light">
       <Reveal>
         <Eyebrow tone="light">{eyebrow}</Eyebrow>
       </Reveal>

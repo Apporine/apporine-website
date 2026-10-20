@@ -39,7 +39,7 @@ const tile = "relative flex h-full min-h-[260px] flex-col rounded-[24px] p-8";
  */
 export function WhatWeBuild() {
   return (
-    <Section labelledBy="what-we-build-title" background="bg-plum-100">
+    <Section labelledBy="what-we-build-title" background="bg-plum-100" surface="light">
       <Reveal>
         <Eyebrow tone="light">{eyebrow}</Eyebrow>
       </Reveal>
@@ -52,6 +52,7 @@ export function WhatWeBuild() {
         {capabilities.map((capability, index) => (
           <Reveal key={capability.title} as="li" index={index}>
             <div
+              data-cursor="open"
               className={`${tile} group border border-plum-200 bg-[rgba(251,249,252,0.65)] backdrop-blur-[12px] transition-[translate,border-color] duration-240 ease-brand hover:-translate-y-1 hover:border-orchid has-focus-visible:border-orchid motion-reduce:hover:translate-y-0`}
             >
               <CapabilityIconSvg icon={capability.icon} />
@@ -77,7 +78,7 @@ export function WhatWeBuild() {
         ))}
 
         <Reveal as="li" index={capabilities.length}>
-          <div className={`${tile} items-start bg-plum-800 text-plum-50`}>
+          <div data-surface="dark" className={`${tile} items-start bg-plum-800 text-plum-50`}>
             <h3 className={`${displayClass} text-[28px] leading-[0.95] text-plum-50`}>
               <SegmentText segments={invitation.title} tone="dark" />
             </h3>

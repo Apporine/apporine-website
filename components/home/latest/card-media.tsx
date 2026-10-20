@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ParallaxLayer } from "@/components/parallax-layer";
 
 type CardMediaProps = {
   /** Base name in /public/videos (webm, mp4 and -poster.webp). */
@@ -47,36 +48,38 @@ export function CardMedia({ film, focalPoint, filmEnabled, near, playing }: Card
 
   return (
     <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
-      <div className="latest-still absolute inset-0">
-        {/* eslint-disable-next-line @next/next/no-img-element -- decorative poster, already web optimised */}
-        <img
-          src={`${base}-poster.webp`}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          style={{ objectPosition: focalPoint }}
-          className="absolute inset-0 size-full object-cover"
-        />
-        {filmEnabled && (
-          <video
-            ref={videoRef}
-            muted
-            loop
-            playsInline
-            preload={near ? "metadata" : "none"}
-            tabIndex={-1}
-            onPlaying={() => setStarted(true)}
-            onPause={() => setStarted(false)}
+      <ParallaxLayer>
+        <div className="latest-still absolute inset-0">
+          {/* eslint-disable-next-line @next/next/no-img-element -- decorative poster, already web optimised */}
+          <img
+            src={`${base}-poster.webp`}
+            alt=""
+            loading="lazy"
+            decoding="async"
             style={{ objectPosition: focalPoint }}
-            className={`absolute inset-0 size-full object-cover ${
-              visible ? "opacity-100 duration-500" : "opacity-0 duration-300"
-            } transition-opacity ease-brand`}
-          >
-            <source src={`${base}.webm`} type="video/webm" />
-            <source src={`${base}.mp4`} type="video/mp4" />
-          </video>
-        )}
-      </div>
+            className="absolute inset-0 size-full object-cover"
+          />
+          {filmEnabled && (
+            <video
+              ref={videoRef}
+              muted
+              loop
+              playsInline
+              preload={near ? "metadata" : "none"}
+              tabIndex={-1}
+              onPlaying={() => setStarted(true)}
+              onPause={() => setStarted(false)}
+              style={{ objectPosition: focalPoint }}
+              className={`absolute inset-0 size-full object-cover ${
+                visible ? "opacity-100 duration-500" : "opacity-0 duration-300"
+              } transition-opacity ease-brand`}
+            >
+              <source src={`${base}.webm`} type="video/webm" />
+              <source src={`${base}.mp4`} type="video/mp4" />
+            </video>
+          )}
+        </div>
+      </ParallaxLayer>
     </div>
   );
 }

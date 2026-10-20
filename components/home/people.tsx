@@ -26,7 +26,7 @@ function initials(name: string): string {
 /** Real photograph from /public/people/, or the monogram tile until one exists. Never AI faces or stock photos. */
 function Portrait({ person }: { person: Person }) {
   return (
-    <div className="relative mb-6 aspect-[4/5] overflow-hidden rounded-[24px] bg-plum-800">
+    <div data-surface="dark" className="relative mb-6 aspect-[4/5] overflow-hidden rounded-[24px] bg-plum-800">
       <div className="size-full transition-transform duration-240 ease-brand group-hover:scale-[1.03] motion-reduce:group-hover:scale-100">
         {person.photo ? (
           <Image src={person.photo} alt={person.name} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
@@ -75,7 +75,7 @@ export function People() {
   const shown = people.filter((person) => person.name);
 
   return (
-    <Section labelledBy="people-title" background="bg-plum-50">
+    <Section labelledBy="people-title" background="bg-plum-50" surface="light">
       <Reveal>
         <Eyebrow tone="light">{eyebrow}</Eyebrow>
       </Reveal>

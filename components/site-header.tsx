@@ -9,6 +9,7 @@ import { MobileMenu } from "@/components/nav/mobile-menu";
 import { NavLogo } from "@/components/nav/nav-logo";
 import { capsuleInset, capsulePadding, pillButton } from "@/components/nav/styles";
 import { navItems, startBuilding, talkToUs } from "@/lib/navigation";
+import { useScrollLock } from "@/lib/smooth-scroll";
 import { useHiddenOnScrollDown, useMediaQuery, useScrolledPast } from "@/lib/use-browser-state";
 
 // Timings from 05-navigation-spec.md section 5.
@@ -54,6 +55,8 @@ export function SiteHeader() {
   const scrolled = useScrolledPast(80);
   const anyOpen = openId !== null;
   const hidden = useHiddenOnScrollDown(120, !reducedMotion && !anyOpen && !menuOpen && !focusInside);
+  // The page stays put behind an open panel or the menu.
+  useScrollLock(anyOpen || menuOpen);
 
   // Crossing the 1280px breakpoint closes whichever menu no longer exists.
   if (isDesktop && menuOpen) setMenuOpen(false);
@@ -198,6 +201,7 @@ export function SiteHeader() {
       />
 
       <header
+        data-surface="dark"
         onFocus={() => setFocusInside(true)}
         onBlur={onHeaderBlur}
         className={`pointer-events-none fixed inset-x-0 top-5 z-50 transition-[translate] duration-350 ease-brand ${
@@ -277,6 +281,7 @@ export function SiteHeader() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               onClick={() => setMenuOpen(true)}
+              data-cursor="button"
               className={`${pillButton} xl:hidden`}
             >
               Menu

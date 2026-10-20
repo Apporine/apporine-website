@@ -35,7 +35,7 @@ function AllLink() {
  */
 export function Latest() {
   return (
-    <Section labelledBy="latest-title" background="bg-ink" padding="py-[clamp(96px,10vw,160px)]">
+    <Section labelledBy="latest-title" background="bg-ink" surface="dark" padding="py-[clamp(96px,10vw,160px)]">
       <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between md:gap-10">
         <div>
           <Reveal>
