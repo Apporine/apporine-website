@@ -231,6 +231,7 @@ export function SiteHeader() {
                       type="button"
                       aria-expanded={isOpen}
                       aria-controls={panelId(item.id)}
+                      data-cursor="link"
                       onPointerEnter={(event) => onItemPointerEnter(item.id, event)}
                       onPointerLeave={onItemPointerLeave}
                       onClick={() => onItemClick(item.id)}
@@ -266,6 +267,7 @@ export function SiteHeader() {
                 href={talkToUs.href}
                 prefetch={false}
                 onClick={close}
+                data-cursor="link"
                 className="rounded-pill px-3.5 py-2.5 font-sans text-[15px] leading-5 font-medium text-plum-50 transition-opacity duration-(--dur-micro) ease-brand hover:opacity-80 focus-visible:outline-3 focus-visible:outline-offset-0 focus-visible:outline-citrine"
               >
                 {talkToUs.label}

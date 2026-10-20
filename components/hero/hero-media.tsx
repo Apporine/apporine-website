@@ -114,7 +114,7 @@ export function HeroMedia({
   const mobilePoster = media.mobile.poster;
 
   return (
-    <div aria-hidden="true" data-cursor="view" className="absolute inset-0 overflow-hidden">
+    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
       {/* The film drifts with the parallax; the scrim below stays with the text. */}
       <ParallaxLayer>
         {/* Fallback until a poster or video exists (slide 3 for now). */}

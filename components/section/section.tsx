@@ -5,7 +5,7 @@ type SectionProps = {
   labelledBy: string;
   /** Background utility, e.g. "bg-plum-950" (rhythm table in 07-homepage-spec.md). */
   background: string;
-  /** Dark (plum, Ink) or light (Pearl, Lilac Mist): sets the Precision cursor colour. */
+  /** Dark (plum, Ink) or light (Pearl, Lilac Mist): sets the custom cursor colour. */
   surface: "dark" | "light";
   /** Vertical padding; defaults to `sectionPadding`. */
   padding?: string;
