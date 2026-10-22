@@ -3,6 +3,7 @@
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { focusRing } from "@/components/section/tone";
+import { TranscriptDialog } from "./transcript-dialog";
 
 const FILM = "/videos/film/apporine-film-web";
 export const FILM_POSTER = "/videos/film/apporine-film-poster.webp";
@@ -11,9 +12,11 @@ export const FILM_POSTER = "/videos/film/apporine-film-poster.webp";
 const PLAY_RATIO = 0.4;
 const PAUSE_RATIO = 0.2;
 
-/** Glass: Ink at 55%, 10px blur, a 1px white border. Pills are 40px tall. */
-const glass = `inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-[rgba(11,10,13,0.55)] text-white backdrop-blur-[10px] transition-colors duration-240 ease-brand hover:bg-[rgba(11,10,13,0.75)] ${focusRing}`;
-const glassPill = `h-10 ${glass}`;
+/** Glass: Ink at 55%, 10px blur, a 1px white border. */
+const glass =
+  "inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-[rgba(11,10,13,0.55)] text-white backdrop-blur-[10px]";
+/** Glass controls are 40px tall, with a Citrine edge on hover. */
+const glassPill = `h-10 ${glass} transition-colors duration-200 ease-brand hover:border-[rgba(245,230,99,0.6)] hover:bg-[rgba(11,10,13,0.75)] ${focusRing}`;
 
 /*
  * Overlays sit at the frame's top left and are moved into place with translate
@@ -41,9 +44,9 @@ function PlayIcon({ className = "size-4" }: { className?: string }) {
   );
 }
 
-function PauseIcon() {
+function PauseIcon({ className = "size-4" }: { className?: string }) {
   return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" className="size-4" fill="currentColor">
+    <svg aria-hidden="true" viewBox="0 0 20 20" className={className} fill="currentColor">
       <rect x="4.5" y="3.5" width="3.8" height="13" rx="1" />
       <rect x="11.7" y="3.5" width="3.8" height="13" rx="1" />
     </svg>
@@ -75,6 +78,8 @@ export function FilmPlayer({ autoplay }: FilmPlayerProps) {
   const [startedByVisitor, setStarted] = useState(false);
   const started = autoplay || startedByVisitor;
   const userPaused = useRef(false);
+  /** The centred play or pause icon shown for 600ms after each toggle (a new key restarts it). */
+  const [flash, setFlash] = useState<{ icon: "play" | "pause"; key: number } | null>(null);
 
   useEffect(() => {
     if (near) videoRef.current?.load();
@@ -153,6 +158,11 @@ export function FilmPlayer({ autoplay }: FilmPlayerProps) {
     }
   }
 
+  function pause() {
+    userPaused.current = true;
+    videoRef.current?.pause();
+  }
+
   function onPlayPause() {
     const video = videoRef.current;
     if (!video) return;
@@ -161,9 +171,17 @@ export function FilmPlayer({ autoplay }: FilmPlayerProps) {
       if (ended) setEnded(false);
       video.play().catch(() => {});
     } else {
-      userPaused.current = true;
-      video.pause();
+      pause();
     }
+  }
+
+  /** A click or Space and Enter on the frame: play or pause, with the centred icon as feedback. */
+  function onFrame() {
+    const video = videoRef.current;
+    if (!video) return;
+    setFlash({ icon: video.paused ? "play" : "pause", key: (flash?.key ?? 0) + 1 });
+    if (!started) onStart();
+    else onPlayPause();
   }
 
   function onStart() {
@@ -197,16 +215,30 @@ export function FilmPlayer({ autoplay }: FilmPlayerProps) {
         )}
       </video>
 
-      {!started && (
-        <button
-          type="button"
-          data-cursor="button"
-          aria-label="Play film"
-          onClick={onStart}
-          className={`${centred} size-[72px] ${glass}`}
-        >
+      {/* The whole frame plays and pauses; the controls sit above it. */}
+      <button
+        type="button"
+        aria-label="Apporine film, press space to play or pause"
+        onClick={onFrame}
+        className="absolute inset-0 size-full focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-citrine"
+      />
+
+      {/* Without autoplay, a play icon on the poster until the first play. */}
+      {!started && !flash && (
+        <div aria-hidden="true" className={`${centred} pointer-events-none size-[72px] ${glass}`}>
           <PlayIcon className="ms-1 size-6" />
-        </button>
+        </div>
+      )}
+
+      {flash && (
+        <div
+          key={flash.key}
+          aria-hidden="true"
+          onAnimationEnd={() => setFlash(null)}
+          className={`${centred} pointer-events-none size-[72px] animate-[film-flash_600ms_linear_both] ${glass}`}
+        >
+          {flash.icon === "play" ? <PlayIcon className="ms-1 size-6" /> : <PauseIcon className="size-6" />}
+        </div>
       )}
 
       {ended && (
@@ -223,6 +255,7 @@ export function FilmPlayer({ autoplay }: FilmPlayerProps) {
 
       {started && (
         <div className={`${bottomRight} flex gap-2`}>
+          <TranscriptDialog onOpen={pause} className={`px-4 font-sans text-sm font-medium ${glassPill}`} />
           <button
             type="button"
             data-cursor="button"
@@ -245,7 +278,7 @@ export function FilmPlayer({ autoplay }: FilmPlayerProps) {
         </div>
       )}
 
-      <div aria-hidden="true" className="absolute top-0 left-0 h-[3px] w-full [translate:0_calc(100cqh-3px)]">
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 h-[3px] w-full [translate:0_calc(100cqh-3px)]">
         <div ref={progressRef} className="h-full origin-left scale-x-0 bg-citrine rtl:origin-right" />
       </div>
     </div>

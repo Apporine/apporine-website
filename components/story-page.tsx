@@ -45,7 +45,7 @@ export function StoryPage({ path }: { path: RoutePath }) {
         </div>
         <div className={`${gutter} pb-[clamp(48px,6vw,96px)]`}>
           {/* Measures keep the text inside the darkened area, so it holds 4.5:1 over the film. */}
-          <Eyebrow tone="dark" onFilm>
+          <Eyebrow tone="dark">
             {story.category}
           </Eyebrow>
           <h1

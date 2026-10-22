@@ -9,7 +9,6 @@ import { SectionHeadline } from "@/components/section/section-headline";
 import type { TextSegment } from "@/lib/text";
 import { useSaveData } from "@/lib/use-browser-state";
 import { FilmPlayer } from "./film-player";
-import { TranscriptDialog } from "./transcript-dialog";
 
 const eyebrow = "WHY APPORINE EXISTS";
 const headline: TextSegment[] = [{ text: "Built for the decade, " }, { text: "not the quarter.", accent: true }];
@@ -106,7 +105,6 @@ export function ApporineFilm() {
     ? { x, y, width, height, borderRadius }
     : { x: 0, y: 0, width: "100%", height: "100%", borderRadius: "var(--frame-radius)" };
   const headerStyle = expanding ? { opacity: headerOpacity, y: headerY } : { opacity: 1, y: 0 };
-  const linkStyle = expanding ? { opacity: headerOpacity } : { opacity: 1 };
 
   return (
     <section
@@ -144,10 +142,6 @@ export function ApporineFilm() {
             </motion.div>
           </div>
         </div>
-
-        <motion.div className="mt-4" style={linkStyle}>
-          <TranscriptDialog />
-        </motion.div>
       </div>
     </section>
   );

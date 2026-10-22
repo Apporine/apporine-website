@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePointerMotion } from "@/components/section/motion";
 
 /*
@@ -8,6 +8,10 @@ import { usePointerMotion } from "@/components/section/motion";
  * set its colour (data-surface="dark" | "light") and elements its state
  * (data-cursor). Sizes, shapes and fades are CSS ("Minimal cursor" in
  * app/globals.css); this loop only moves it.
+ *
+ * A modal dialog opens in the browser's top layer, above everything else, so
+ * the cursor moves into the open dialog and back to the body when it closes.
+ * The element is created here, not rendered by React, so moving it is safe.
  */
 
 type CursorState = "default" | "link" | "button" | "card" | "text";
@@ -49,12 +53,23 @@ function hitTest(x: number, y: number): Hit {
 /** The minimal cursor, mounted once in the root layout. Fine pointers without reduced motion only. */
 export function Cursor() {
   const enabled = usePointerMotion();
-  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const cursor = ref.current;
-    if (!enabled || !cursor) return;
+    if (!enabled) return;
+    const cursor = document.createElement("div");
+    cursor.className = "site-cursor";
+    cursor.setAttribute("aria-hidden", "true");
+    Object.assign(cursor.dataset, { state: "default", surface: "dark", away: "" });
+    document.body.append(cursor);
     document.documentElement.classList.add("has-custom-cursor");
+
+    // Inside the open modal dialog (the top layer), otherwise in the body.
+    const placeCursor = () => {
+      const host = document.querySelector("dialog:modal") ?? document.body;
+      if (cursor.parentElement !== host) host.append(cursor);
+    };
+    const dialogs = new MutationObserver(placeCursor);
+    dialogs.observe(document.body, { subtree: true, attributeFilter: ["open"] });
 
     const pointer = { x: 0, y: 0 };
     const at = { x: 0, y: 0 };
@@ -69,13 +84,13 @@ export function Cursor() {
       if (dirty) {
         dirty = false;
         const hit = hitTest(pointer.x, pointer.y);
-        cursor!.dataset.surface = hit.surface;
-        if (hit.state !== state) cursor!.dataset.state = state = hit.state;
+        cursor.dataset.surface = hit.surface;
+        if (hit.state !== state) cursor.dataset.state = state = hit.state;
       }
       const ease = state === "card" ? CARD_EASE : EASE;
       at.x += (pointer.x - at.x) * ease;
       at.y += (pointer.y - at.y) * ease;
-      cursor!.style.transform = `translate3d(${at.x.toFixed(2)}px, ${at.y.toFixed(2)}px, 0)`;
+      cursor.style.transform = `translate3d(${at.x.toFixed(2)}px, ${at.y.toFixed(2)}px, 0)`;
     }
 
     function onPointerMove(event: PointerEvent) {
@@ -87,7 +102,7 @@ export function Cursor() {
         at.x = pointer.x;
         at.y = pointer.y;
       }
-      delete cursor!.dataset.away;
+      delete cursor.dataset.away;
       dirty = true;
     }
     // Content moves under a still pointer when the page scrolls or a panel opens.
@@ -95,7 +110,7 @@ export function Cursor() {
       dirty = true;
     };
     const onLeave = () => {
-      cursor!.dataset.away = "";
+      cursor.dataset.away = "";
     };
     const interval = window.setInterval(recheck, 250);
 
@@ -110,10 +125,11 @@ export function Cursor() {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("scroll", recheck);
       document.documentElement.removeEventListener("mouseleave", onLeave);
+      dialogs.disconnect();
+      cursor.remove();
       document.documentElement.classList.remove("has-custom-cursor");
     };
   }, [enabled]);
 
-  if (!enabled) return null;
-  return <div ref={ref} aria-hidden="true" data-state="default" data-surface="dark" data-away="" className="site-cursor" />;
+  return null;
 }
