@@ -15,7 +15,7 @@ export const routes = {
   insurance: "/industries/insurance",
   telecommunications: "/industries/telecommunications",
   energyAndUtilities: "/industries/energy-and-utilities",
-  logistics: "/industries/logistics",
+  logistics: "/industries/logistics-and-supply-chain",
   retailAndEcommerce: "/industries/retail-and-ecommerce",
   insights: "/insights",
   engineeringNotes: "/insights/engineering-notes",
@@ -50,6 +50,11 @@ export const anchors = {
 export const contactTopics = {
   security: `${routes.contact}?topic=security`,
 } as const;
+
+/** Contact link that preselects an industry (lib/industries.ts slugs). */
+export function contactForIndustry(slug: string): string {
+  return `${routes.contact}?industry=${slug}`;
+}
 
 /**
  * Pages not built yet. Each has an app/<path>/page.tsx that renders the

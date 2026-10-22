@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Short desktop screens (such as 1366x768): the Industries panel sets smaller body text to fit one screen. */
+@custom-variant short-desktop (@media (min-width: 1024px) and (max-height: 800px));
+
 /*
  * Apporine design tokens (source: _brief/docs/04-design-tokens.css).
  * Colours and motion durations live on :root under their original names.
@@ -159,6 +162,39 @@
   }
   to {
     transform: scaleX(1);
+  }
+}
+
+/* Industries, the Light Console (components/home/industries/industry-console.tsx). */
+/* The active tab's progress line: its end advances to the next industry. */
+@keyframes industry-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* The active industry's content and glass card fade and rise 14px. */
+@keyframes industry-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The very slow zoom on the industry images. */
+@keyframes industry-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
   }
 }
 
@@ -641,8 +677,8 @@
     left: 0;
     z-index: 100;
     box-sizing: border-box;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     translate: -50% -50%;
     border-radius: 2px;
     /* The card ring is an inset shadow: borders round 1.5px down to 1px on standard screens. */
@@ -670,24 +706,24 @@
   }
 
   .site-cursor[data-state="link"] {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 3px;
     opacity: 0.7;
   }
 
   /* Buttons keep their own hover style; the cursor steps back but stays visible. */
   .site-cursor[data-state="button"] {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 1.5px;
     opacity: 0.6;
   }
 
   /* Over a whole clickable card: a hollow circle that trails gently. */
   .site-cursor[data-state="card"] {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     background-color: transparent;
     box-shadow: inset 0 0 0 1.5px var(--citrine);

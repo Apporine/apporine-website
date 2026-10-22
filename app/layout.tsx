@@ -41,7 +41,7 @@ const instrumentSerif = Instrument_Serif({
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: "500",
+  weight: ["500", "600"],
   display: "swap",
   variable: "--font-ibm-plex-mono",
 });

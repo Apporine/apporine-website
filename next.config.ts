@@ -57,6 +57,10 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  // The Logistics page moved to its full industry slug.
+  async redirects() {
+    return [{ source: "/industries/logistics", destination: "/industries/logistics-and-supply-chain", permanent: true }];
+  },
 };
 
 export default nextConfig;
