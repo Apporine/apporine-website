@@ -4,6 +4,7 @@ import { preload } from "react-dom";
 import { HeroCarousel } from "@/components/hero/hero-carousel";
 import { resolveSlideMedia } from "@/components/hero/resolve-slide-media";
 import { slides } from "@/components/hero/slides";
+import { ApporineFilm } from "@/components/home/film/apporine-film";
 import { Footer } from "@/components/home/footer/footer";
 import { HowWeBuild } from "@/components/home/how-we-build";
 import { Industries } from "@/components/home/industries";
@@ -46,6 +47,7 @@ export default function Home() {
       <main>
         <HeroCarousel slides={heroSlides} />
         <Latest />
+        <ApporineFilm />
         <TwoWays />
         <Products hasRelyxusScreenshot={publicFileExists(RELYXUS_SCREENSHOT)} />
         <HowWeBuild />
