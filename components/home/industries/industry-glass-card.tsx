@@ -6,7 +6,7 @@ import type { IndustryCard } from "@/lib/industries";
 export function IndustryGlassCard({ card }: { card: IndustryCard }) {
   return (
     <div className="rounded-[20px] border border-[rgba(245,230,99,0.38)] bg-[rgba(18,4,26,0.58)] p-[22px] backdrop-blur-[16px]">
-      <p className="mb-2.5 font-mono text-xs leading-[1.3] font-semibold tracking-[0.16em] text-citrine">
+      <p className="mb-2.5 font-mono text-[13px] leading-[1.3] font-semibold tracking-[0.16em] text-citrine">
         {card.kicker}
       </p>
       <h3 className="mb-2 font-sans text-[21px] leading-[1.25] font-bold text-plum-50">{card.title}</h3>

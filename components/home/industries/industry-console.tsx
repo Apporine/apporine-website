@@ -17,45 +17,53 @@ const PANEL_ID = "industries-panel";
 const tabId = (industry: Industry) => `industry-tab-${industry.slug}`;
 
 const imageSizes = "(min-width: 1024px) min(34vw, 480px), (min-width: 768px) 44vw, 100vw";
-const sectionLabel = "font-mono text-xs leading-[1.3] font-semibold tracking-[0.16em] text-plum-600";
+const sectionLabel = "font-mono text-sm leading-[1.3] font-semibold tracking-[0.14em] text-[#4A1F66]";
 /** Stacked panes share one grid cell, so the stack is as tall as the tallest industry (no layout shift). */
 const stacked = "[grid-area:1/1]";
 const entering = "animate-[industry-in_700ms_var(--ease-brand)_both] motion-reduce:animate-none";
+/** Hovering an industry selects it after 120ms, so sweeping across the list does not flicker. */
+const HOVER_SELECT_MS = 120;
 
 /** The active industry and the one before it (it stays under the new image while that fades in). */
 type View = { active: number; previous: number; cycle: number };
 
 function IndustryContent({ industry, active }: { industry: Industry; active: boolean }) {
   return (
-    <div className={`${stacked} flex flex-col gap-[22px] ${active ? entering : "invisible"}`}>
-      <p className="font-mono text-[13px] leading-[1.3] font-semibold tracking-[0.18em] text-orchid-deep">
+    <div className={`${stacked} flex flex-col gap-[22px] lg:gap-4 ${active ? entering : "invisible"}`}>
+      <p className="font-mono text-[15px] leading-[1.3] font-semibold tracking-[0.16em] text-orchid-deep">
         {industry.label}
       </p>
       <h3
-        className={`${displayClass} text-[clamp(28px,8vw,36px)] leading-[0.92] text-plum-800 md:text-[clamp(36px,3.6vw,56px)]`}
+        className={`${displayClass} text-[clamp(28px,8vw,36px)] leading-[0.92] text-plum-800 md:text-[clamp(36px,3.6vw,56px)] lg:text-[clamp(30px,3vw,48px)]`}
       >
         <SegmentText segments={industry.stakes} tone="light" />
       </h3>
       <div className="flex flex-col gap-2.5">
         <p className={sectionLabel}>{industriesSection.challengeLabel}</p>
-        <p className="max-w-[38rem] font-sans text-lg leading-[1.6] font-medium text-plum-800">{industry.challenge}</p>
+        <p
+          className={`max-w-[38rem] font-sans text-lg leading-[1.6] font-medium text-plum-800 short-desktop:text-[17px]`}
+        >
+          {industry.challenge}
+        </p>
       </div>
       <div className="flex flex-col gap-2.5">
         <p className={sectionLabel}>{industriesSection.buildLabel}</p>
-        <ul className="flex flex-col gap-2.5">
+        <ul className="flex flex-col gap-2.5 lg:gap-2">
           {industry.build.map((capability, index) => {
             const Icon = capabilityIcons[index];
             return (
               <li
                 key={capability.title}
-                className="flex gap-4 rounded-[18px] border border-[#EDE3F5] bg-plum-50 px-[18px] py-4"
+                className="flex gap-4 rounded-[18px] border border-[#EDE3F5] bg-plum-50 px-[18px] py-4 lg:px-4 lg:py-3"
               >
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-[13px] bg-[#F1E4FB] text-orchid-deep">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-[13px] bg-[#F1E4FB] text-orchid-deep lg:size-10">
                   <Icon />
                 </span>
                 <span className="flex flex-col gap-0.5 font-sans">
                   <span className="text-[17px] leading-[1.35] font-bold text-plum-800">{capability.title}</span>
-                  <span className={`text-[15px] leading-[1.5] ${lightBodyColour}`}>{capability.description}</span>
+                  <span className={`text-[15px] leading-[1.5] ${lightBodyColour} short-desktop:text-sm`}>
+                    {capability.description}
+                  </span>
                 </span>
               </li>
             );
@@ -97,6 +105,7 @@ export function IndustryConsole() {
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const hoverTimer = useRef(0);
 
   useEffect(() => {
     const section = rootRef.current?.closest("section");
@@ -119,7 +128,9 @@ export function IndustryConsole() {
     });
   }, [active, vertical, reducedMotion]);
 
-  /** A click or Enter and Space: show it now and restart the 8 second timer. */
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+
+  /** A click, hover, keyboard focus, Enter or Space: show it now and restart the 8 second timer. */
   function select(index: number) {
     setView((current) => ({
       active: index,
@@ -136,7 +147,16 @@ export function IndustryConsole() {
     }));
   }
 
-  // Arrow keys, Home and End move focus between tabs; Enter and Space select (the button's click).
+  // Fine pointers: resting on an industry for 120ms selects it; the timer restarts from it when the pointer leaves the panel.
+  function onTabPointerEnter(event: React.PointerEvent, index: number) {
+    if (event.pointerType !== "mouse" || !finePointer) return;
+    window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => {
+      if (index !== active) select(index);
+    }, HOVER_SELECT_MS);
+  }
+
+  // Arrow keys, Home and End move focus between tabs and select (Enter and Space also select).
   function onKeyDown(event: React.KeyboardEvent) {
     const current = tabRefs.current.indexOf(document.activeElement as HTMLButtonElement);
     if (current < 0) return;
@@ -153,6 +173,7 @@ export function IndustryConsole() {
     if (target === undefined) return;
     event.preventDefault();
     tabRefs.current[target]?.focus();
+    select(target);
   }
 
   const industry = industries[active];
@@ -164,7 +185,7 @@ export function IndustryConsole() {
       onPointerLeave={() => setHovered(false)}
       onFocus={(event) => event.target.matches(":focus-visible") && setKeyboardInside(true)}
       onBlur={(event) => !rootRef.current?.contains(event.relatedTarget) && setKeyboardInside(false)}
-      className="mt-11 flex flex-col overflow-hidden rounded-[24px] border border-[#E6DCEF] bg-[#FFFFFF] shadow-[0_40px_80px_-56px_rgba(46,10,58,0.45)] md:rounded-[32px] lg:flex-row"
+      className="mt-11 flex flex-col overflow-hidden lg:mt-8 lg:min-h-[min(calc(100svh-160px),760px)] rounded-[24px] border border-[#E6DCEF] bg-[#FFFFFF] shadow-[0_40px_80px_-56px_rgba(46,10,58,0.45)] md:rounded-[32px] lg:flex-row"
     >
       <div
         ref={listRef}
@@ -190,7 +211,9 @@ export function IndustryConsole() {
               tabIndex={selected ? 0 : -1}
               data-cursor="button"
               onClick={() => select(index)}
-              className={`relative flex min-h-14 shrink-0 snap-start items-center gap-3 rounded-2xl px-4 text-left font-sans text-base leading-[1.25] whitespace-nowrap text-plum-800 transition-[background-color,box-shadow] duration-(--dur-standard) ease-brand lg:py-2 lg:whitespace-normal ${focusRingLight} ${
+              onPointerEnter={(event) => onTabPointerEnter(event, index)}
+              onPointerLeave={() => window.clearTimeout(hoverTimer.current)}
+              className={`relative flex min-h-14 shrink-0 lg:min-h-[52px] snap-start items-center gap-3 rounded-2xl px-4 text-left font-sans text-base leading-[1.25] whitespace-nowrap text-plum-800 transition-[background-color,box-shadow] duration-(--dur-standard) ease-brand lg:py-2 lg:whitespace-normal ${focusRingLight} ${
                 selected
                   ? "bg-[linear-gradient(110deg,#EFDDFC_0%,#FBEFF7_50%,#FFF4B8_100%)] font-bold shadow-[0_10px_24px_-14px_rgba(165,59,239,0.6)]"
                   : "font-medium hover:bg-[rgba(255,255,255,0.85)]"
@@ -229,14 +252,14 @@ export function IndustryConsole() {
         aria-labelledby={tabId(industry)}
         className="flex min-w-0 flex-1 flex-col md:flex-row"
       >
-        <div className="grid min-w-0 flex-1 p-[clamp(24px,3.2vw,48px)]">
+        <div className="grid min-w-0 flex-1 p-[clamp(24px,3.2vw,48px)] lg:p-[clamp(24px,2.6vw,40px)]">
           {industries.map((item, index) => (
             <IndustryContent key={item.slug} industry={item} active={index === active} />
           ))}
         </div>
 
         <div className="p-4 max-md:pt-0 md:w-[44%] md:shrink-0 lg:w-[34%] lg:min-w-[340px]">
-          <div className="relative isolate h-full min-h-[380px] overflow-hidden rounded-3xl bg-plum-950 md:min-h-[520px] lg:min-h-[600px]">
+          <div className="relative isolate h-full min-h-[380px] overflow-hidden rounded-3xl bg-plum-950 md:min-h-[520px] lg:min-h-0">
             {/* All six images stay stacked: the new one fades in over the last, so there is never a blank frame. */}
             <div className="absolute inset-0 animate-[industry-zoom_16s_ease-in-out_infinite_alternate] motion-reduce:animate-none">
               {industries.map((item, index) => (

@@ -10,7 +10,7 @@ export function Industries() {
       id="industries"
       aria-labelledby="industries-title"
       data-surface="light"
-      className="relative isolate bg-ivory py-[clamp(96px,10vw,140px)]"
+      className="relative isolate bg-ivory py-[clamp(96px,10vw,140px)] lg:py-[clamp(72px,8vw,112px)]"
     >
       <div className="px-[clamp(20px,4vw,64px)]">
         <div className="mx-auto max-w-[1400px]">
@@ -23,7 +23,7 @@ export function Industries() {
                 id="industries-title"
                 tone="light"
                 segments={industriesSection.headline}
-                className="text-[clamp(40px,5vw,76px)] leading-[0.92]"
+                className="text-[clamp(40px,5vw,76px)] leading-[0.92] lg:text-[clamp(36px,4.4vw,68px)]"
               />
             </div>
             <p className="max-w-[400px] flex-[0_1_400px] font-sans text-lg leading-[1.55] text-[#3A2347]">
