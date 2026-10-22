@@ -8,8 +8,24 @@ import { useScrollLock } from "@/lib/smooth-scroll";
 const TRANSCRIPT =
   "The world’s great industries were built to last. Capital. Energy. Networks. Trade. They were built for their century. And they delivered. But the world no longer waits. Every year, it asks them to move faster than they were ever designed to move. Between that ambition and the systems beneath it, there is a gap. Others will advise you on it. We build what closes it. Products and platforms, engineered to be relied on for a decade. Not a quarter. Apporine. Pristine, by design.";
 
-/** "Read the transcript": a native modal dialog (focus trap, Escape and focus return built in). */
-export function TranscriptDialog({ className = "" }: { className?: string }) {
+type TranscriptDialogProps = {
+  /** The trigger's classes (the film's glass pill). */
+  className: string;
+  /** Called as the dialog opens (the film pauses). */
+  onOpen: () => void;
+};
+
+function DocumentIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 2.75h6.5L15 6.25v11H5z" />
+      <path d="M11.5 2.75v3.5H15M7.75 10h4.5M7.75 13h4.5" />
+    </svg>
+  );
+}
+
+/** The "Transcript" pill and its native modal dialog (focus trap, Escape and focus return built in). */
+export function TranscriptDialog({ className, onOpen }: TranscriptDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   useScrollLock(open);
@@ -18,13 +34,17 @@ export function TranscriptDialog({ className = "" }: { className?: string }) {
     <>
       <button
         type="button"
+        data-cursor="button"
+        aria-label="Open the film transcript"
         onClick={() => {
+          onOpen();
           dialogRef.current?.showModal();
           setOpen(true);
         }}
-        className={`rounded-sm py-1.5 font-sans text-[15px] font-medium text-plum-200 underline decoration-plum-400 underline-offset-4 transition-colors duration-240 ease-brand hover:text-plum-50 ${focusRing} ${className}`}
+        className={className}
       >
-        Read the transcript
+        <DocumentIcon />
+        <span aria-hidden="true">Transcript</span>
       </button>
       <dialog
         ref={dialogRef}
