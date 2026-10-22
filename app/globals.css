@@ -162,6 +162,39 @@
   }
 }
 
+/* Industries, the Light Console (components/home/industries/industry-console.tsx). */
+/* The active tab's progress line: its end advances to the next industry. */
+@keyframes industry-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* The active industry's content and glass card fade and rise 14px. */
+@keyframes industry-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The very slow zoom on the industry images. */
+@keyframes industry-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
 /* The film's play or pause feedback (components/home/film/film-player.tsx): in, hold, out over 600ms. */
 @keyframes film-flash {
   0%,

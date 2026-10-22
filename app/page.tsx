@@ -7,7 +7,7 @@ import { slides } from "@/components/hero/slides";
 import { ApporineFilm } from "@/components/home/film/apporine-film";
 import { Footer } from "@/components/home/footer/footer";
 import { HowWeBuild } from "@/components/home/how-we-build";
-import { Industries } from "@/components/home/industries";
+import { Industries } from "@/components/home/industries/industries";
 import { INSIGHTS_SHOWN, Insights } from "@/components/home/insights";
 import { Invitation } from "@/components/home/invitation";
 import { Latest } from "@/components/home/latest/latest";
@@ -48,11 +48,11 @@ export default function Home() {
         <HeroCarousel slides={heroSlides} />
         <Latest />
         <ApporineFilm />
+        <Industries />
         <TwoWays />
         <Products hasRelyxusScreenshot={publicFileExists(RELYXUS_SCREENSHOT)} />
         <HowWeBuild />
         <WhatWeBuild />
-        <Industries />
         <Trust />
         <People />
         {insights.length >= INSIGHTS_SHOWN && <Insights articles={insights} />}
