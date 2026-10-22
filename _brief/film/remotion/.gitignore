@@ -1,0 +1,7 @@
+node_modules/
+out/
+proxies/
+public/clips/
+public/audio/
+.remotion/
+*.log

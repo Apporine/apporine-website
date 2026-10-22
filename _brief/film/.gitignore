@@ -1,0 +1,9 @@
+# Film media stays local (about 1.2 GB): source footage, music, voiceover and renders.
+# Only the Remotion project and the voice tool are versioned.
+/ai/
+/apporine/
+/shots/
+/music/
+/voice/
+/output/
+desktop.ini
