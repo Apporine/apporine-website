@@ -67,3 +67,18 @@ export function useHiddenOnScrollDown(offset: number, enabled: boolean): boolean
 
   return enabled && hidden;
 }
+
+type NetworkInformation = EventTarget & { saveData?: boolean };
+
+/** True when the visitor asks to save data (Save-Data, where supported). False on the server. */
+export function useSaveData(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+      connection?.addEventListener("change", onChange);
+      return () => connection?.removeEventListener("change", onChange);
+    },
+    () => (navigator as Navigator & { connection?: NetworkInformation }).connection?.saveData === true,
+    () => false,
+  );
+}
