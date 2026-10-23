@@ -2,31 +2,46 @@
 
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/components/section/motion";
-import { createGuilloche, type Guilloche, type Shield } from "./guilloche";
+import { createGuilloche, FALCON_SRC, watermarks, type Guilloche, type Light } from "./guilloche";
 
-/** Pointer follow: the light closes 10% of the gap each frame. */
-const FOLLOW = 0.1;
 const RESIZE_DEBOUNCE_MS = 150;
 
-const SHIELDED_TEXT = "[data-guilloche-shield] :is(h2, p)";
+/** Ambient lights: position as fractions of the section over t seconds, radius at 1600px wide. */
+const AMBIENT = [
+  { x: (t: number) => 0.18 + 0.12 * Math.sin(0.21 * t), y: (t: number) => 0.32 + 0.16 * Math.sin(0.17 * t), radius: 170, strength: 0.8 },
+  // Regularly passes over the large Falcon.
+  { x: (t: number) => 0.8 + 0.1 * Math.sin(0.18 * t + 1), y: (t: number) => 0.6 + 0.18 * Math.sin(0.23 * t + 2), radius: 190, strength: 0.85 },
+  { x: (t: number) => 0.5 + 0.32 * Math.sin(0.12 * t + 3), y: (t: number) => 0.88 + 0.07 * Math.sin(0.2 * t), radius: 150, strength: 0.6 },
+];
 
-/** Layout box relative to `section`, ignoring transforms (entrance reveals move text 24px). */
-function shieldOf(element: HTMLElement, section: HTMLElement): Shield {
+/** Pointer light: radius at 1600px wide, follow and fade easing per frame. */
+const POINTER = { radius: 220, follow: 0.12, fadeIn: 0.08, fadeOut: 0.05 };
+
+/** Radii scale with the section: clamp(0.8, width / 1600, 1.2). */
+function radiusScale(width: number): number {
+  return Math.min(1.2, Math.max(0.8, width / 1600));
+}
+
+/** The lines of copy the gold holds back behind. */
+const SHIELDED_TEXT = "[data-guilloche-content] :is(h2, p)";
+
+/** Layout box of `element` relative to `section`, ignoring transforms (entrance reveals move text 24px). */
+function boxOf(element: HTMLElement, section: HTMLElement): DOMRect {
   let x = 0;
   let y = 0;
   for (let node: HTMLElement | null = element; node && node !== section; node = node.offsetParent as HTMLElement | null) {
     x += node.offsetLeft;
     y += node.offsetTop;
   }
-  return { x, y, width: element.offsetWidth, height: element.offsetHeight };
+  return new DOMRect(x, y, element.offsetWidth, element.offsetHeight);
 }
 
 /**
- * The Guilloché Reveal behind its parent section. The light drifts on its
- * own and follows a mouse over the section (touch: drift only), rendering
- * only while the section and the tab are visible. Reduced motion: one still
- * frame, the gold revealed behind the headline. Text in the block marked
- * with `shieldAttribute` keeps 4.5:1: the gold is held back behind it.
+ * The Guilloché Reveal behind its parent section, with the Falcon watermarks:
+ * three ambient lights drift on their own, and a fourth follows a mouse over
+ * the section, fading in and out (touch: ambient lights only). Renders only
+ * while the section and the tab are visible. Reduced motion: one still
+ * frame, the ambient lights at t = 0.
  */
 export function GuillocheBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -38,38 +53,45 @@ export function GuillocheBackground() {
     if (!canvas || !section) return;
 
     let scene: Guilloche | null = null;
+    let falcon: HTMLImageElement | null = null;
     let width = 0;
     let height = 0;
-    const light = { x: 0, y: 0 };
+    const lights: Light[] = [...AMBIENT, POINTER].map(() => ({ x: 0, y: 0, radius: 0, strength: 0 }));
+    const pointerLight = lights[AMBIENT.length];
     let pointer: { x: number; y: number } | null = null;
-    let placed = false;
     let inView = false;
     let frame = 0;
     const start = performance.now();
 
-    function drawStill() {
-      const headline = section!.querySelector("h2");
-      const box = section!.getBoundingClientRect();
-      const target = headline?.getBoundingClientRect();
-      const x = target ? target.left - box.left + target.width / 2 : width / 2;
-      const y = target ? target.top - box.top + target.height / 2 : height / 2;
-      scene?.draw(x, y);
+    function placeAmbient(t: number) {
+      const scale = radiusScale(width);
+      AMBIENT.forEach((ambient, index) => {
+        const light = lights[index];
+        light.x = width * ambient.x(t);
+        light.y = height * ambient.y(t);
+        light.radius = ambient.radius * scale;
+        light.strength = ambient.strength;
+      });
+      pointerLight.radius = POINTER.radius * scale;
     }
 
     function tick(now: number) {
       frame = requestAnimationFrame(tick);
       if (!scene) return;
-      const t = (now - start) / 1000;
-      const targetX = pointer ? pointer.x : width * (0.5 + 0.38 * Math.sin(0.3 * t));
-      const targetY = pointer ? pointer.y : height * (0.5 + 0.3 * Math.sin(0.23 * t));
-      if (!placed) {
-        light.x = targetX;
-        light.y = targetY;
-        placed = true;
+      placeAmbient((now - start) / 1000);
+      if (pointer) {
+        // Fading in from nothing: start where the pointer is.
+        if (pointerLight.strength < 0.01) {
+          pointerLight.x = pointer.x;
+          pointerLight.y = pointer.y;
+        }
+        pointerLight.x += (pointer.x - pointerLight.x) * POINTER.follow;
+        pointerLight.y += (pointer.y - pointerLight.y) * POINTER.follow;
+        pointerLight.strength += (1 - pointerLight.strength) * POINTER.fadeIn;
+      } else {
+        pointerLight.strength += (0 - pointerLight.strength) * POINTER.fadeOut;
       }
-      light.x += (targetX - light.x) * FOLLOW;
-      light.y += (targetY - light.y) * FOLLOW;
-      scene.draw(light.x, light.y);
+      scene.draw(lights);
     }
 
     function updateLoop() {
@@ -86,12 +108,19 @@ export function GuillocheBackground() {
       if (!box.width || !box.height) return;
       width = box.width;
       height = box.height;
-      const shields = [...section!.querySelectorAll<HTMLElement>(SHIELDED_TEXT)].map((element) =>
-        shieldOf(element, section!),
-      );
-      scene = createGuilloche(canvas!, width, height, Math.min(2, window.devicePixelRatio || 1), shields);
-      if (reducedMotion) drawStill();
-      else if (placed) scene.draw(light.x, light.y);
+      const content = section!.querySelector<HTMLElement>("[data-guilloche-content]");
+      const contentBox = content ? boxOf(content, section!) : new DOMRect(0, 0, width, height);
+      scene = createGuilloche(canvas!, {
+        width,
+        height,
+        dpr: Math.min(2, window.devicePixelRatio || 1),
+        textCentre: { x: contentBox.x + contentBox.width / 2, y: contentBox.y + contentBox.height / 2 },
+        shields: [...section!.querySelectorAll<HTMLElement>(SHIELDED_TEXT)].map((element) => boxOf(element, section!)),
+        falcon,
+        placements: watermarks(width, height, window.innerWidth),
+      });
+      placeAmbient(reducedMotion ? 0 : (performance.now() - start) / 1000);
+      scene.draw(lights);
     }
 
     let resizeTimer = 0;
@@ -113,10 +142,20 @@ export function GuillocheBackground() {
       pointer = null;
     }
 
-    build();
+    // The base gradient (CSS) shows until the Falcon has loaded; without it, the waves alone.
+    let cancelled = false;
+    const image = new Image();
+    image.src = FALCON_SRC;
+    image
+      .decode()
+      .then(() => (falcon = image))
+      .catch(() => (falcon = null))
+      .finally(() => {
+        if (!cancelled) build();
+      });
     resizeObserver.observe(section);
-    // Text reflows (fonts arriving) move the shields without resizing the section.
-    const content = section.querySelector("[data-guilloche-shield]");
+    // Text reflows (fonts arriving) move the content centre without resizing the section.
+    const content = section.querySelector("[data-guilloche-content]");
     if (content) resizeObserver.observe(content);
     viewObserver.observe(section);
     document.addEventListener("visibilitychange", updateLoop);
@@ -126,6 +165,7 @@ export function GuillocheBackground() {
     }
 
     return () => {
+      cancelled = true;
       cancelAnimationFrame(frame);
       window.clearTimeout(resizeTimer);
       resizeObserver.disconnect();

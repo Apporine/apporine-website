@@ -5,7 +5,7 @@ import { deferredRendering } from "@/components/section/section";
 import { SectionHeadline } from "@/components/section/section-headline";
 import { focusRing } from "@/components/section/tone";
 import type { LetsTalkContent } from "@/lib/lets-talk";
-import { shieldAttribute } from "./guilloche";
+import { contentAttribute } from "./guilloche";
 import { GuillocheBackground } from "./guilloche-background";
 import { IntentSelector } from "./intent-selector";
 
@@ -15,7 +15,7 @@ type LetsTalkProps = LetsTalkContent & {
 };
 
 /** Before the canvas paints (and without script): the same base gradient. */
-const baseGradient = "bg-[linear-gradient(to_bottom_right,#100318,#26092F)]";
+const baseGradient = "bg-[linear-gradient(to_bottom_right,#130420,#2B0B36)]";
 
 /**
  * Closing invitation: a settled, centred block (max 820px) over the
@@ -35,7 +35,7 @@ export function LetsTalk({ id, eyebrow, headline, lead, options, email }: LetsTa
       <GuillocheBackground />
 
       <div className={`${gutter} py-20`}>
-        <div {...shieldAttribute} className="mx-auto flex max-w-[820px] flex-col items-center text-center">
+        <div {...contentAttribute} className="mx-auto flex max-w-[820px] flex-col items-center text-center">
           <Reveal>
             <Eyebrow tone="dark" citrine className="mb-6 justify-center">
               {eyebrow}
