@@ -6,17 +6,12 @@ import { resolveSlideMedia } from "@/components/hero/resolve-slide-media";
 import { slides } from "@/components/hero/slides";
 import { ApporineFilm } from "@/components/home/film/apporine-film";
 import { Footer } from "@/components/home/footer/footer";
-import { HowWeBuild } from "@/components/home/how-we-build";
 import { Industries } from "@/components/home/industries/industries";
 import { INSIGHTS_SHOWN, Insights } from "@/components/home/insights";
 import { Invitation } from "@/components/home/invitation";
 import { Latest } from "@/components/home/latest/latest";
-import { People } from "@/components/home/people";
 import { Products } from "@/components/home/products/products";
 import { RELYXUS_SCREENSHOT } from "@/components/home/products/relyxus-visual";
-import { Trust } from "@/components/home/trust";
-import { TwoWays } from "@/components/home/two-ways";
-import { WhatWeBuild } from "@/components/home/what-we-build";
 import { insights } from "@/lib/site";
 
 /** Preload the first slide poster (the LCP image) for the matching viewport. */
@@ -49,12 +44,7 @@ export default function Home() {
         <Latest />
         <ApporineFilm />
         <Industries />
-        <TwoWays />
         <Products hasRelyxusScreenshot={publicFileExists(RELYXUS_SCREENSHOT)} />
-        <HowWeBuild />
-        <WhatWeBuild />
-        <Trust />
-        <People />
         {insights.length >= INSIGHTS_SHOWN && <Insights articles={insights} />}
         <Invitation />
       </main>
