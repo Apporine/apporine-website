@@ -29,12 +29,12 @@ type View = { active: number; previous: number; cycle: number };
 
 function IndustryContent({ industry, active }: { industry: Industry; active: boolean }) {
   return (
-    <div className={`${stacked} flex flex-col gap-[22px] lg:gap-4 ${active ? entering : "invisible"}`}>
+    <div className={`${stacked} flex flex-col gap-[22px] lg:gap-[14px] ${active ? entering : "invisible"}`}>
       <p className="font-mono text-[15px] leading-[1.3] font-semibold tracking-[0.16em] text-orchid-deep">
         {industry.label}
       </p>
       <h3
-        className={`${displayClass} text-[clamp(28px,8vw,36px)] leading-[0.92] text-plum-800 md:text-[clamp(36px,3.6vw,56px)] lg:text-[clamp(30px,3vw,48px)]`}
+        className={`${displayClass} text-[clamp(28px,8vw,36px)] leading-[0.92] text-plum-800 md:text-[clamp(36px,3.6vw,56px)] lg:text-[clamp(28px,2.6vw,42px)]`}
       >
         <SegmentText segments={industry.stakes} tone="light" />
       </h3>
@@ -54,14 +54,14 @@ function IndustryContent({ industry, active }: { industry: Industry; active: boo
             return (
               <li
                 key={capability.title}
-                className="flex gap-4 rounded-[18px] border border-[#EDE3F5] bg-plum-50 px-[18px] py-4 lg:px-4 lg:py-3"
+                className="flex gap-4 rounded-[18px] border border-[#EDE3F5] bg-plum-50 px-[18px] py-4 lg:px-4 lg:py-[11px]"
               >
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-[13px] bg-[#F1E4FB] text-orchid-deep lg:size-10">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-[13px] bg-[#F1E4FB] text-orchid-deep lg:size-[38px]">
                   <Icon />
                 </span>
                 <span className="flex flex-col gap-0.5 font-sans">
-                  <span className="text-[17px] leading-[1.35] font-bold text-plum-800">{capability.title}</span>
-                  <span className={`text-[15px] leading-[1.5] ${lightBodyColour} short-desktop:text-sm`}>
+                  <span className="text-[17px] leading-[1.35] font-bold text-plum-800 lg:text-base">{capability.title}</span>
+                  <span className={`text-[15px] leading-[1.5] ${lightBodyColour} lg:text-[14.5px]`}>
                     {capability.description}
                   </span>
                 </span>
@@ -185,7 +185,7 @@ export function IndustryConsole() {
       onPointerLeave={() => setHovered(false)}
       onFocus={(event) => event.target.matches(":focus-visible") && setKeyboardInside(true)}
       onBlur={(event) => !rootRef.current?.contains(event.relatedTarget) && setKeyboardInside(false)}
-      className="mt-11 flex flex-col overflow-hidden lg:mt-8 lg:min-h-[min(calc(100svh-160px),760px)] rounded-[24px] border border-[#E6DCEF] bg-[#FFFFFF] shadow-[0_40px_80px_-56px_rgba(46,10,58,0.45)] md:rounded-[32px] lg:flex-row"
+      className="mt-11 flex flex-col overflow-hidden lg:mt-6 lg:min-h-[max(560px,min(calc(100svh-300px),640px))] rounded-[24px] border border-[#E6DCEF] bg-[#FFFFFF] shadow-[0_40px_80px_-56px_rgba(46,10,58,0.45)] md:rounded-[32px] lg:flex-row"
     >
       <div
         ref={listRef}
@@ -213,7 +213,7 @@ export function IndustryConsole() {
               onClick={() => select(index)}
               onPointerEnter={(event) => onTabPointerEnter(event, index)}
               onPointerLeave={() => window.clearTimeout(hoverTimer.current)}
-              className={`relative flex min-h-14 shrink-0 lg:min-h-[52px] snap-start items-center gap-3 rounded-2xl px-4 text-left font-sans text-base leading-[1.25] whitespace-nowrap text-plum-800 transition-[background-color,box-shadow] duration-(--dur-standard) ease-brand lg:py-2 lg:whitespace-normal ${focusRingLight} ${
+              className={`relative flex min-h-14 shrink-0 lg:min-h-[50px] snap-start items-center gap-3 rounded-2xl px-4 text-left font-sans text-base leading-[1.25] whitespace-nowrap text-plum-800 transition-[background-color,box-shadow] duration-(--dur-standard) ease-brand lg:py-2 lg:whitespace-normal ${focusRingLight} ${
                 selected
                   ? "bg-[linear-gradient(110deg,#EFDDFC_0%,#FBEFF7_50%,#FFF4B8_100%)] font-bold shadow-[0_10px_24px_-14px_rgba(165,59,239,0.6)]"
                   : "font-medium hover:bg-[rgba(255,255,255,0.85)]"
@@ -252,7 +252,7 @@ export function IndustryConsole() {
         aria-labelledby={tabId(industry)}
         className="flex min-w-0 flex-1 flex-col md:flex-row"
       >
-        <div className="grid min-w-0 flex-1 p-[clamp(24px,3.2vw,48px)] lg:p-[clamp(24px,2.6vw,40px)]">
+        <div className="grid min-w-0 flex-1 p-[clamp(24px,3.2vw,48px)] lg:content-center lg:p-[clamp(22px,2.2vw,34px)]">
           {industries.map((item, index) => (
             <IndustryContent key={item.slug} industry={item} active={index === active} />
           ))}
