@@ -8,10 +8,11 @@ import { ApporineFilm } from "@/components/home/film/apporine-film";
 import { Footer } from "@/components/home/footer/footer";
 import { Industries } from "@/components/home/industries/industries";
 import { INSIGHTS_SHOWN, Insights } from "@/components/home/insights";
-import { Invitation } from "@/components/home/invitation";
 import { Latest } from "@/components/home/latest/latest";
 import { Products } from "@/components/home/products/products";
 import { RELYXUS_SCREENSHOT } from "@/components/home/products/relyxus-visual";
+import { LetsTalk } from "@/components/section/lets-talk/lets-talk";
+import { homeLetsTalk } from "@/lib/lets-talk";
 import { insights } from "@/lib/site";
 
 /** Preload the first slide poster (the LCP image) for the matching viewport. */
@@ -46,7 +47,7 @@ export default function Home() {
         <Industries />
         <Products hasRelyxusScreenshot={publicFileExists(RELYXUS_SCREENSHOT)} />
         {insights.length >= INSIGHTS_SHOWN && <Insights articles={insights} />}
-        <Invitation />
+        <LetsTalk id="lets-talk" {...homeLetsTalk} />
       </main>
       <Footer />
     </>

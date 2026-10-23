@@ -11,7 +11,7 @@ export const company = {
   registeredOffice: "",
   /** For example "England and Wales". */
   placeOfRegistration: "",
-  contactEmail: "",
+  contactEmail: "contact@apporine.com",
 };
 
 /**
