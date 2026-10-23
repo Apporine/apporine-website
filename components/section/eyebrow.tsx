@@ -4,6 +4,8 @@ import type { Tone } from "./tone";
 type EyebrowProps = {
   tone: Tone;
   children: string;
+  /** Citrine text instead of the tone colour (dark surfaces only). */
+  citrine?: boolean;
   className?: string;
 };
 
@@ -12,8 +14,8 @@ type EyebrowProps = {
  * uppercase. Plum 600 on light surfaces, Lilac Mist on dark (at least 6.6:1 on every surface).
  * The Falcon sits on the first line when a long eyebrow wraps on a phone.
  */
-export function Eyebrow({ tone, children, className = "mb-7" }: EyebrowProps) {
-  const colour = tone === "light" ? "text-plum-600" : "text-plum-100";
+export function Eyebrow({ tone, children, citrine = false, className = "mb-7" }: EyebrowProps) {
+  const colour = citrine ? "text-citrine" : tone === "light" ? "text-plum-600" : "text-plum-100";
   return (
     <p
       className={`flex items-start gap-3 font-mono text-sm leading-[1.3] font-medium tracking-[0.18em] uppercase ${colour} ${className}`}
