@@ -5,11 +5,11 @@ import type { IndustryCard } from "@/lib/industries";
 /** The glass panel at the foot of the industry image: kicker, title, text and a Citrine button. */
 export function IndustryGlassCard({ card }: { card: IndustryCard }) {
   return (
-    <div className="rounded-[20px] border border-[rgba(245,230,99,0.38)] bg-[rgba(18,4,26,0.58)] p-[22px] backdrop-blur-[16px]">
+    <div className="rounded-[20px] border border-[rgba(245,230,99,0.38)] bg-[rgba(18,4,26,0.58)] p-[22px] backdrop-blur-[16px] lg:p-[18px]">
       <p className="mb-2.5 font-mono text-[13px] leading-[1.3] font-semibold tracking-[0.16em] text-citrine">
         {card.kicker}
       </p>
-      <h3 className="mb-2 font-sans text-[21px] leading-[1.25] font-bold text-plum-50">{card.title}</h3>
+      <h3 className="mb-2 font-sans text-[21px] leading-[1.25] font-bold text-plum-50 lg:text-[19px]">{card.title}</h3>
       <p className="mb-5 font-sans text-[15px] leading-[1.5] text-[#F3EDF7]">{card.text}</p>
       <Link
         href={card.button.href}
